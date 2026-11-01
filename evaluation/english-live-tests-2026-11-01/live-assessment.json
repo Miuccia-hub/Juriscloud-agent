@@ -1,0 +1,80 @@
+{
+  "TC01": {
+    "short_status": "Completed with legal verification limitations",
+    "actual": [
+      "The uploaded test contract.docx remained associated with the English review request.",
+      "The agent generated a new English summary and a table containing fourteen contract issues, with paragraph references, impacts and suggested actions.",
+      "The checklist recorded ten checks, three with insufficient information. Issues included missing Annex 2, full payment before transfer, warranty wording and post-termination settlement.",
+      "The activity record showed public-source and PKULAW research, two topic batches and an omissions check. Quotation matches were reported as 0 / 0."
+    ],
+    "excerpt": "The contract’s main practical risks are the missing Annex 2, unclear vehicle-history disclosure, payment in full before transfer and delivery without a clear refund mechanism, and an undefined six-month warranty.",
+    "conclusion": "The upload and English contract-review workflow completed. This establishes functional execution, not comprehensive legal correctness.",
+    "limitation": "No legal quotation match was recorded. The underlying legal conclusions, completeness and execution status of the contract were not independently verified.",
+    "images": [
+      {
+        "file": "TC01-final-input.jpg",
+        "caption": "Uploaded document and English review prompt"
+      },
+      {
+        "file": "TC01-final-summary.jpg",
+        "caption": "Actual English contract review summary"
+      },
+      {
+        "file": "TC01-final-table.jpg",
+        "caption": "Contract risk table with paragraph references"
+      }
+    ]
+  },
+  "TC02": {
+    "short_status": "Completed with evidence and localization limitations",
+    "actual": [
+      "The English prompt received a focused answer about refunds, expenses and return arrangements rather than a repeat of the risk table.",
+      "The Activity record showed PKULAW research before public-source retrieval. Five records had readable text; quotation matches were reported as 5 / 6.",
+      "The answer connected the research question to payment, transfer, delivery and termination paragraphs D1-P26, D1-P36 to D1-P37 and D1-P53 to D1-P57.",
+      "The agent discussed reported vehicle, online-sale and service-contract decisions. It distinguished a five-day party-agreed settlement timetable from a general legal deadline and disclosed incomplete or non-final case material."
+    ],
+    "excerpt": "The materials identify no reported case directly deciding refund deadlines, expense allocation and return arrangements together after a failed used-car transfer.",
+    "conclusion": "Focused case research and the PKULAW-first sequence completed. The response differentiated the examples and their limits; some case identification and finality remained incomplete.",
+    "limitation": "Some Activity labels remained Chinese in the English interface. Quotation matching was 5 / 6, not complete. Case summaries, legal accuracy and subsequent treatment were not independently verified.",
+    "images": [
+      {
+        "file": "TC02-final-output.jpg",
+        "caption": "English case research question and answer"
+      },
+      {
+        "file": "TC02-final-activity.jpg",
+        "caption": "PKULAW first research and quotation matching"
+      },
+      {
+        "file": "TC02-final-cases.jpg",
+        "caption": "Reported case comparisons"
+      },
+      {
+        "file": "TC02-final-cases-tail.jpg",
+        "caption": "Expense allocation and case limitations"
+      }
+    ]
+  },
+  "TC03": {
+    "short_status": "Completed with evidence continuity limitations",
+    "actual": [
+      "The follow-up completed in English in the same conversation immediately after TC02, without a new upload.",
+      "The answer directly rejected the proposed generalisation and distinguished conditional return remedies from an automatic return of both vehicle and full purchase price.",
+      "It referred to the earlier answer and the same contract paragraphs, including D1-P26, D1-P36 to D1-P38 and D1-P53 to D1-P57. It did not reproduce the initial risk table.",
+      "The agent stated that the vehicle case discussed previously was not included in the current evidence set and could not be verified for this follow-up."
+    ],
+    "excerpt": "No—not as a general rule established by the materials available. The supplied legal source supports a conditional return remedy in specified circumstances, but does not establish that courts will generally order both the vehicle and the full purchase price returned in every vehicle-sale dispute.",
+    "conclusion": "Contextual follow-up functionality completed: the response addressed the proposition, retained the contract context and qualified the earlier answer. Evidence continuity was partial because the earlier case material was not retained in the current research set.",
+    "limitation": "The agent could not reverify the preceding vehicle case from its current sources. Its interpretation of the legal provisions and their current status were not independently checked. Functional completion is not a legal accuracy certification.",
+    "images": [
+      {
+        "file": "TC03-final-output.jpg",
+        "caption": "Contextual English follow up and direct answer"
+      },
+      {
+        "file": "TC03-final-reasoning.jpg",
+        "caption": "Contract context and conditional legal analysis"
+      }
+    ]
+  }
+}

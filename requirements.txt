@@ -1,0 +1,10 @@
+streamlit==1.50.0
+openai>=2.0,<3
+pydantic>=2.7,<3
+python-docx>=1.1,<2
+pypdf>=5,<7
+reportlab>=4,<5
+beautifulsoup4>=4.12,<5
+httpx>=0.28,<1
+mcp==1.30.0
+fonttools>=4.60,<5

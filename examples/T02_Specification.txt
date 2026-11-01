@@ -1,0 +1,4 @@
+Technical specification and email summary (fictional)
+The portal needs authentication, an export screen and a payment integration. Security and acceptance criteria have not been agreed.
+Email from Developer to Client: We agree that you will own the bespoke source code upon full payment, subject to existing third-party components.
+This email summary conflicts with clause 5. Its contractual status is not confirmed.

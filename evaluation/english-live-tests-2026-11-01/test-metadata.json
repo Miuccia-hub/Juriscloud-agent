@@ -1,0 +1,47 @@
+{
+  "TC01": {
+    "title": "Upload a contract and ask a review question",
+    "objective": "Verify that the application accepts a Word contract and generates a contract-specific review in English.",
+    "preconditions": "A fresh session with Mainland China selected, English interface and output, a valid model connection, and the original test contract.docx.",
+    "steps": [
+      "Attach test contract.docx using the upload control.",
+      "Enter the English comprehensive-review prompt and submit it.",
+      "Wait for completion and inspect the report, table, paragraph references and limitations."
+    ],
+    "expected": [
+      "The uploaded filename remains associated with the request.",
+      "A new English report addresses the contract, with risks, supporting references and suggested action.",
+      "Missing information and limits of legal verification are disclosed."
+    ]
+  },
+  "TC02": {
+    "title": "Research cases concerning a contract issue",
+    "objective": "Verify focused case research about refund deadlines, expense settlement and return arrangements after a failed transaction.",
+    "preconditions": "Continue TC01 in the same conversation with the uploaded contract retained, English output selected and PKULAW research enabled.",
+    "steps": [
+      "Enter the English case-research prompt in the follow-up composer.",
+      "Submit and inspect the Activity record and generated answer.",
+      "Check case identifiers, connection to contract paragraphs, source labels and applicability limits."
+    ],
+    "expected": [
+      "The answer focuses on the requested issue rather than repeating the full review.",
+      "PKULAW is searched first, with public case research used when the returned evidence is insufficient.",
+      "Any retrieved cases are identified and their factual differences and verification limits are explained."
+    ]
+  },
+  "TC03": {
+    "title": "Continue with a contextual follow-up",
+    "objective": "Verify that the agent understands a follow-up referring to the preceding cases and responds to a proposed generalisation.",
+    "preconditions": "Continue TC02 without starting a new conversation or uploading a different contract.",
+    "steps": [
+      "Submit the English follow-up asking whether courts generally order return of both the vehicle and purchase price.",
+      "Inspect whether the answer addresses that proposition directly.",
+      "Check continuity with the previous cases and contract, and whether necessary qualifications are retained."
+    ],
+    "expected": [
+      "The answer resolves the contextual reference to disputes of this kind.",
+      "It distinguishes the cited case outcomes from a universal or generally established result.",
+      "It gives a targeted response rather than reproducing the initial risk table."
+    ]
+  }
+}

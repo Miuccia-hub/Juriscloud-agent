@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>导出报告</title>
+<style>
+:root{--accent:#337caf;--hover:#286895;--ink:#233849;--muted:#506879;--ease:cubic-bezier(.23,1,.32,1)}
+*{box-sizing:border-box}body{margin:0;font:15px -apple-system,BlinkMacSystemFont,"PingFang SC","Segoe UI",sans-serif;color:var(--ink)}
+.export-shell{display:flex;align-items:center;gap:16px;padding:8px 5px;min-height:72px}
+.action{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:9px;flex:none;
+ width:176px;height:48px;padding:0 16px;border:1px solid #ffffff80;border-radius:14px;
+ background:var(--accent);color:white;text-decoration:none;cursor:pointer;white-space:nowrap;
+ box-shadow:inset 0 1px 0 #ffffff33,0 4px 12px #337caf26;
+ transition:width 260ms var(--ease),border-radius 260ms var(--ease),background-color 150ms var(--ease)}
+.action:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.action:hover{background:var(--hover)}
+.label,.open-icon{transition:opacity 140ms ease}.open-icon{width:17px;height:17px;flex:none}
+.action[data-state="generating"]{width:48px;padding:0;border-radius:50%;cursor:wait}
+.action[data-state="generating"] .label,.action[data-state="generating"] .open-icon{opacity:0;width:0;overflow:hidden}
+.ring{display:none;position:absolute;inset:8px;width:30px;height:30px;transform-origin:center;animation:ring-turn 900ms linear infinite}
+.ring circle{fill:none;stroke-width:3}.track{stroke:#ffffff40}.arc{stroke:white;stroke-linecap:round;stroke-dasharray:46 88}
+.action[data-state="generating"] .ring{display:block}
+.status{color:var(--muted);font-size:13px;line-height:1.6}
+@keyframes ring-turn{to{transform:rotate(360deg)}}
+
+
+
+
+@media(max-width:400px){.export-shell{gap:12px}.status{font-size:12px}}
+</style></head><body>
+<div class="export-shell"><a id="action" class="action" href="#" role="button" data-state="idle">
+<svg class="ring" viewBox="0 0 32 32" aria-hidden="true"><circle class="track" cx="16" cy="16" r="13"/><circle class="arc" cx="16" cy="16" r="13"/></svg>
+<svg class="open-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path id="icon-path" d="M12 3v12m-5-5 5 5 5-5M5 17v4h14v-4"/></svg>
+<span class="label" id="label">导出报告</span></a><span class="status" id="status" aria-live="polite"></span></div>
+<script>
+let args={},state='idle',pdfURL=null,awaitingReply=false;
+const action=document.getElementById('action'),label=document.getElementById('label'),status=document.getElementById('status');
+const post=(type,extra={})=>parent.postMessage({isStreamlitMessage:true,type,...extra},'*');
+const say=(zh,en)=>args.english?en:zh;
+function paint(next){
+ state=next;action.dataset.state=state;action.setAttribute('aria-busy',String(state==='generating'));
+ action.setAttribute('aria-disabled',String(state==='generating'));
+ document.documentElement.lang=args.english?'en':'zh-CN';document.title=say('导出报告','Export report');
+ label.textContent=state==='ready'?say('打开','Open'):state==='generating'?say('生成中','Generating'):state==='error'?say('重试导出','Retry export'):say('导出报告','Export report');
+ status.textContent=state==='generating'?say('正在生成文件…','Generating files…'):state==='ready'?say('PDF 已就绪','PDF ready'):'';
+ action.setAttribute('aria-label',state==='ready'?say('打开审查报告 PDF（新标签页）','Open review PDF (new tab)'):label.textContent);
+ document.getElementById('icon-path').setAttribute('d',state==='ready'?'M14 3h7v7m0-7L10 14M10 3H3v18h18v-7':'M12 3v12m-5-5 5 5 5-5M5 17v4h14v-4');
+ if(state==='ready'&&pdfURL){action.href=pdfURL;action.target='_blank';action.rel='noopener';}
+ else{action.href='#';action.removeAttribute('target');action.removeAttribute('rel');}
+ post('streamlit:setFrameHeight',{height:Math.ceil(document.body.scrollHeight)+4});
+}
+action.addEventListener('click',e=>{
+ if(state==='ready'&&pdfURL)return; // A user-activated anchor opens the actual generated PDF.
+ e.preventDefault();if(state==='generating')return;
+ awaitingReply=true;paint('generating');
+ post('streamlit:setComponentValue',{value:{action:'generate',nonce:crypto.randomUUID?.()||Date.now()+'-'+Math.random().toString(36).slice(2)},dataType:'json'});
+});
+action.addEventListener('keydown',e=>{if(e.key===' '){e.preventDefault();action.click();}});
+addEventListener('message',e=>{
+ if(e.source!==parent||e.data?.type!=='streamlit:render')return;args=e.data.args||{};
+ if(awaitingReply&&args.state==='idle')return;
+ awaitingReply=false;
+ if(args.state==='ready'&&args.pdf_url){
+  try{const url=new URL(args.pdf_url,location.origin);
+   if(url.origin!==location.origin||!/^https?:$/.test(url.protocol)||!url.pathname.includes('/media/')||!url.pathname.endsWith('.pdf'))throw Error('Invalid preview URL');
+   pdfURL=url.href;paint('ready');
+  }catch{pdfURL=null;paint('error');}
+ }else{pdfURL=null;paint(args.state==='ready'?'error':args.state||'idle');}
+});
+post('streamlit:componentReady',{apiVersion:1});paint('idle');
+</script></body></html>

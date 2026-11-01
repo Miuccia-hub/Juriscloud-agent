@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Copy answer</title>
+<style>
+*{box-sizing:border-box}body{margin:0;color:#516675;font:13px -apple-system,BlinkMacSystemFont,"PingFang SC","Segoe UI",sans-serif}
+.actions{display:flex;align-items:center;gap:10px;padding:4px 0 30px}.anchor{position:relative;display:inline-flex}
+button{display:grid;place-items:center;width:34px;height:34px;flex:none;padding:7px;border:0;border-radius:9px;background:transparent;color:#718390;cursor:pointer;transition:background-color 140ms,color 140ms}
+button:hover{background:#e6eff6;color:#264f6d}button:active{background:#d9e9f4}button:focus-visible{outline:2px solid #337caf;outline-offset:2px}button:disabled{cursor:wait}
+svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tip{position:absolute;left:0;top:calc(100% + 4px);white-space:nowrap;background:#15222d;color:#fff;padding:4px 9px;border-radius:7px;opacity:0;pointer-events:none;font-size:12px;line-height:17px}
+.anchor:hover .tip,.anchor:focus-within .tip{opacity:1}.feedback{font-size:12px;line-height:1.5}
+.manual{padding:4px 0 10px}.manual p{font-size:12px;line-height:1.6;margin:0 0 8px}.manual textarea{width:100%;height:140px;resize:vertical;border:1px solid #cbdde9;border-radius:10px;padding:10px;background:#f5faff;color:#233849;font-family:inherit;font-size:13px;line-height:1.6}
+[hidden]{display:none!important}
+</style></head><body>
+<div class="actions"><span class="anchor"><button id="copy" type="button" aria-label="Copy answer"><svg id="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="3" width="12" height="14" rx="3"/><path d="M16 17v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h2"/></svg></button><span id="tip" class="tip" aria-hidden="true">Copy</span></span><span id="feedback" class="feedback" role="status" aria-live="polite"></span></div>
+<div id="manual" class="manual" hidden><p id="help"></p><textarea id="text" readonly aria-label="Answer text"></textarea></div>
+<script>
+const button=document.getElementById('copy'),tip=document.getElementById('tip'),feedback=document.getElementById('feedback');
+const manual=document.getElementById('manual'),field=document.getElementById('text'),icon=document.getElementById('icon');
+let args={text:'',english:true},resetTimer=null,revision=0;
+const copyIcon=icon.innerHTML;
+const say=(zh,en)=>args.english?en:zh;
+const post=(type,extra={})=>parent.postMessage({isStreamlitMessage:true,type,...extra},'*');
+function resize(){post('streamlit:setFrameHeight',{height:Math.ceil(document.body.scrollHeight)+2});}
+function idle(){button.disabled=!args.text;button.setAttribute('aria-busy','false');button.setAttribute('aria-label',say('复制回答','Copy answer'));tip.textContent=say('复制','Copy');feedback.textContent='';icon.innerHTML=copyIcon;}
+button.addEventListener('click',async()=>{
+ const current=revision,text=args.text;if(!text)return;
+ button.disabled=true;button.setAttribute('aria-busy','true');clearTimeout(resetTimer);
+ try{
+  if(!navigator.clipboard?.writeText)throw Error('Clipboard unavailable');
+  await navigator.clipboard.writeText(text);
+  if(current!==revision)return;
+  manual.hidden=true;field.value='';button.disabled=false;button.setAttribute('aria-busy','false');
+  button.setAttribute('aria-label',say('已复制','Copied'));tip.textContent=say('已复制','Copied');feedback.textContent=tip.textContent;
+  icon.innerHTML='<path d="m5 12 4 4L19 6"/>';
+  resetTimer=setTimeout(idle,1800);
+ }catch{
+  if(current!==revision)return;
+  idle();feedback.textContent=say('未能自动复制','Could not copy automatically');
+  document.getElementById('help').textContent=say('浏览器未允许自动复制。请选中下方文本，按 ⌘C 或 Ctrl+C 复制。','Your browser did not allow automatic copying. Select the text below and press ⌘C or Ctrl+C.');
+  field.setAttribute('aria-label',say('回答文本','Answer text'));field.value=text;manual.hidden=false;field.focus();field.select();
+ }finally{resize();}
+});
+addEventListener('message',event=>{
+ if(event.source!==parent||event.data?.type!=='streamlit:render')return;
+ const next=event.data.args||{},text=typeof next.text==='string'?next.text:'';
+ if(text!==args.text||!!next.english!==args.english){revision++;clearTimeout(resetTimer);args={text,english:!!next.english};manual.hidden=true;field.value='';idle();}
+ document.documentElement.lang=args.english?'en':'zh-CN';document.title=say('复制回答','Copy answer');resize();
+});
+new ResizeObserver(resize).observe(document.body);
+post('streamlit:componentReady',{apiVersion:1});idle();resize();
+</script></body></html>

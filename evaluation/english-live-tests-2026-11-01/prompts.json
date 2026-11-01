@@ -1,0 +1,14 @@
+[
+  {
+    "id": "TC01",
+    "prompt": "Review this contract comprehensively for legal effect, drafting precision, commercial risks and material omissions. Present the risks, supporting grounds and suggested changes in a table."
+  },
+  {
+    "id": "TC02",
+    "prompt": "Please find relevant cases concerning refund deadlines, expense settlement and return arrangements after a failed transaction."
+  },
+  {
+    "id": "TC03",
+    "prompt": "So, can I understand this to mean that, in disputes of this kind, courts will generally order the return of both the vehicle and the purchase price?"
+  }
+]

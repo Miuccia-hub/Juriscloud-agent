@@ -1,0 +1,29 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8"><title>合同文件上传</title><meta name="description" content="Upload contract materials for review"><style>
+/* Hallmark: app component; bilingual upload with the requested sky palette. */
+html,body{overflow-x:clip}
+:root{--ink:#23455e;--muted:#627b8d;--line:#c6deed;--sky:#edf7fe;--white:#fff;--focus:#2384c7;--error:#b33838;--font:system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;font:14px var(--font);color:var(--ink);overflow-x:clip}button{font:inherit;color:inherit;cursor:pointer;border:1px solid var(--line);border-radius:8px;background:var(--white);padding:8px 12px}button:disabled{opacity:.5;cursor:not-allowed}button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}button:active{transform:scale(.97)}#zone{border:1px dashed var(--line);border-radius:10px;padding:12px;background:var(--sky)}#row{display:flex;align-items:center;gap:12px;justify-content:space-between}#hint{color:var(--muted);font-size:12px;margin-top:4px}.file{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px;overflow-wrap:anywhere}.file button{padding:4px 8px}#error{color:var(--error);margin-top:8px}input{display:none}
+</style></head><body><div id="zone"><div id="row"><span id="label"></span><button id="browse" type="button"></button></div><div id="hint"></div><div id="files"></div><div id="error" role="alert"></div></div><input id="input" type="file" accept=".txt,.pdf,.docx"><script>
+let args={},files=[],ready=false;const $=id=>document.getElementById(id);
+const post=(type,extra={})=>parent.postMessage({isStreamlitMessage:true,type,...extra},'*');
+const resize=()=>post('streamlit:setFrameHeight',{height:document.body.scrollHeight+5});
+const say=(zh,en)=>args.english?en:zh;
+function paint(){
+ document.documentElement.lang=args.english?'en':'zh';document.title=say('合同文件上传','Contract upload');
+ $('label').textContent=args.label||'';$('browse').textContent=say('选择文件','Choose files');
+ $('hint').textContent=say('也可拖放文件到这里','Or drop files here');$('input').multiple=args.limit>1;
+ $('files').replaceChildren();files.forEach((f,i)=>{let row=document.createElement('div');row.className='file';let text=document.createElement('span');text.textContent=f.name;let b=document.createElement('button');b.textContent='×';b.setAttribute('aria-label',say('移除 ','Remove ')+f.name);b.onclick=()=>{files.splice(i,1);send();};row.append(text,b);$('files').append(row)});resize();
+}
+function send(){post('streamlit:setComponentValue',{value:{files},dataType:'json'});paint()}
+async function read(incoming){
+ $('error').textContent='';const batch=Array.from(incoming);
+ if(batch.some(f=>!f.size||f.size>8*1024*1024||!(/\.(txt|pdf|docx)$/i).test(f.name))){$('error').textContent=say('请使用非空且不超过 8 MB 的 Word、PDF 或文本文件。','Use a non-empty Word, PDF or text file up to 8 MB.');resize();return}
+ if(args.limit>1&&files.length+batch.length>args.limit){$('error').textContent=say('最多上传六份补充资料。','Upload up to six supporting documents.');resize();return}
+ const encoded=await Promise.all(batch.map(f=>new Promise((resolve,reject)=>{let r=new FileReader();r.onload=()=>resolve({name:f.name,data:r.result.split(',')[1]});r.onerror=reject;r.readAsDataURL(f)})));
+ files=args.limit===1?encoded.slice(0,1):files.concat(encoded);send();$('input').value='';
+}
+$('browse').onclick=()=>$('input').click();$('input').onchange=e=>read(e.target.files);
+$('zone').ondragover=e=>e.preventDefault();$('zone').ondrop=e=>{e.preventDefault();read(e.dataTransfer.files)};
+addEventListener('message',e=>{if(e.source!==parent||e.data.type!=='streamlit:render')return;args=e.data.args;if(!ready){files=args.initial?.files||[];ready=true}paint()});
+post('streamlit:componentReady',{apiVersion:1});resize();
+</script></body></html>

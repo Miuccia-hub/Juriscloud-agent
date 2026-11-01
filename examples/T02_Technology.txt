@@ -1,0 +1,11 @@
+Technology Development Agreement (fictional test)
+Client: Cloudgum Studio Pty Ltd. Developer: Blue Wattle Labs Pty Ltd.
+1 Governing law: Victoria, Australia. Courts in Victoria have non-exclusive jurisdiction.
+2 Services: Developer will build a customer portal according to the attached specification.
+3 Delivery: Three milestones. Dates and acceptance criteria are to be agreed later.
+4 Fees: AUD 40000 plus applicable GST. Client pays the entire fee before development starts.
+5 Intellectual property: All project intellectual property, including bespoke deliverables, remains owned by Developer. Client receives a revocable licence during the term only.
+6 Acceptance: Deliverables are deemed accepted immediately upon delivery, whether or not tested.
+7 Liability: Client indemnifies Developer for all losses of any kind. Developer has no liability under this agreement.
+8 Termination: Developer may terminate for convenience on one day's notice. No refund is payable. Client must pay all remaining fees.
+9 Confidentiality: Each party must protect the other's confidential information for two years, subject to lawful disclosure requirements.
