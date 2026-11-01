@@ -1,445 +1,445 @@
-> 2026-10-29 最新界面要求（优先于旧版描述）：按用户 Mike 的 P1/P2/P4 截图实现聊天工作区。上传和提问后连续分析，不设 P3 式逐项确认表单；未确认事实与冲突列入条件和局限，在后续对话补充。呈现实际执行记录、简短直接回答及两列风险表格。合同修订的采纳选择保留为单独操作，不作为出具分析的前提。浅天蓝、中英文单语言界面继续保留。
+> 2026-10-29 Latest interface requirements (take precedence over earlier descriptions): implement the chat workspace according to the user's Mike screenshots P1/P2/P4. Analysis proceeds continuously after upload and submission, without P3-style item-by-item confirmation forms; unconfirmed facts and conflicts become conditions and limitations that can be supplemented in later conversation. Show actual execution records, a brief direct answer and a two-column risk table. Acceptance of contract amendments remains a separate operation, not a prerequisite for receiving analysis. Retain light sky blue and separate Chinese/English interfaces.
 
-> 2026-10-26 修订：本补充优先于下文旧版界面描述。产品不展示静态样例，不提供预设回答；三个作业案例作为独立仓库材料，必须记录真实输入、问题、回答与截图。中文／英文 UI 单独显示，回答语言独立选择或跟随问题。主要布局参考 Mike 的左侧导航、中央对话与输入、按需右侧材料面板；保留浅天蓝。实施及未验收项见 juriscloud-contracts/BUILD_STATUS.md。
+> 2026-10-26 Revision: this supplement takes precedence over the earlier interface descriptions below. The product displays no static examples or preset answers; the three assignment cases are separate repository materials and must record actual inputs, questions, answers and screenshots. Chinese/English UI is displayed separately; answer language is selected independently or follows the question. The main layout draws on Mike's left navigation, central conversation and input, and on-demand right document panel; retain light sky blue. See juriscloud-contracts/BUILD_STATUS.md for implementation and unverified items.
 
-# 商业合同审查与法律研究 Agent 产品需求文档
+# Commercial Contract Review and Legal Research Agent — Product Requirements Document
 
-版本：1.1  
-日期：2026 年 10 月 26 日  
-状态：根据需求访谈整理，作为首版设计与开发依据  
-产品工作名称：Juriscloud Agent（
+Version: 1.1  
+Date: 26 October 2026  
+Status: Compiled from requirements interviews as the basis for initial design and development  
+Working product name: Juriscloud Agent (
 
-## 1 产品目标
+## 1 Product Goals
 
-面向律师、企业法务及法学生，提供结合合同原文、交易背景和可追溯法律依据的商业合同审查工具。用户上传合同，确认审查范围与立场后，获得风险清单、法律分析和替代条款；随后可以围绕具体条款多轮追问，逐项选择修改，导出审查报告与带修订痕迹的 Word 合同。
+Provide lawyers, in-house counsel and law students with a commercial contract review tool combining original contract text, transaction context and traceable legal authorities. After uploading a contract and confirming scope and perspective, users receive a risk list, legal analysis and replacement clauses; they can then ask multi-turn questions about specific clauses, select amendments individually, and export a review report and a Word contract with tracked changes.
 
-首版以完成课堂作业及展示为交付节点，同时保留实际辅助工作的使用价值。核心质量投入放在合同理解、真实检索、引用核验、修改一致性和文件导出；账户、云端历史记录及团队协作不纳入首版。
+The initial release targets classroom submission and demonstration while retaining practical value as an assistive tool. Quality work focuses on contract understanding, genuine research, citation verification, amendment consistency and file export; accounts, cloud history and team collaboration are outside the initial release.
 
-本产品完成的主要任务是商业合同审查。案例与法规检索、条款问答、修改建议均服务于这一任务，不扩展为覆盖所有案件的通用诉讼代理工具。
+The product's primary task is commercial contract review. Case and legislation research, clause questions and amendment suggestions serve that task; the product does not expand into a general litigation representative for every kind of case.
 
-### 1.1 产品成功标准
+### 1.1 Product Success Criteria
 
-- 用户能够从上传合同完整走到审查、追问、选择修改及导出。
-- 每个风险有明确的原文位置，缺失条款则说明建议插入位置。
-- 实质法律结论可追溯到实际取得的材料，依据不足时明确保留判断。
-- 用户可理解风险的性质、等级、影响及处理优先级。
-- 修订版仅包含用户采纳的修改，且可以在 Word 中逐项接受或拒绝。
-- 应用通过 Streamlit Cloud 链接运行，由访问者提供自己的 OpenAI API key。
+- Users can complete the entire path from contract upload to review, follow-up, amendment selection and export.
+- Every risk has a clear original-text location; a missing clause includes a suggested insertion location.
+- Substantive legal conclusions are traceable to materials actually obtained; judgment is expressly reserved where support is insufficient.
+- Users can understand the nature, level, impact and handling priority of each risk.
+- The revised version contains only accepted amendments, which can be individually accepted or rejected in Word.
+- The application runs through a Streamlit Cloud link, with visitors supplying their own OpenAI API key.
 
-## 2 目标用户与使用场景
+## 2 Target Users and Use Cases
 
-| 用户 | 主要需求 | 产品支持 |
+| User | Main Needs | Product Support |
 |---|---|---|
-| 律师 | 定位问题、核对依据、准备修改意见 | 条款定位、争点分析、原文引用及替代文本 |
-| 企业法务 | 从交易立场识别履约与商业风险 | 用户立场、背景材料比对、风险分级及修改清单 |
-| 法学生 | 理解审查步骤与法律适用 | 展示研究步骤、来源、适用理由及不确定性 |
+| Lawyer | Locate issues, check authorities and prepare amendment advice | Clause locations, issue analysis, original quotations and replacement text |
+| In-house counsel | Identify performance and commercial risks from a transaction perspective | User perspective, background-material comparison, risk levels and amendment list |
+| Law student | Understand review steps and legal application | Research steps, sources, applicability reasons and uncertainty |
 
-典型场景包括采购合同审查、合作协议审查、咨询服务审查、技术开发和知识产权安排审查、保密协议审查，以及财税服务合同和一般商业合同中财税条款的检查。
+Typical uses include procurement contracts, cooperation agreements, consulting services, technology development and intellectual property arrangements, confidentiality agreements, and checks of tax/financial service contracts and tax/financial clauses in general commercial contracts.
 
-## 3 首版范围
+## 3 Initial Release Scope
 
-### 3.1 已确认的范围
+### 3.1 Confirmed Scope
 
-| 维度 | 首版要求 |
+| Dimension | Initial Release Requirement |
 |---|---|
-| 法律体系 | 维多利亚州与中国大陆，由用户选择，每次独立审查 |
-| 澳洲法律覆盖 | 以维州为审查范围，同时识别相关联邦法律及必要的其他法律联系 |
-| 合同类型 | 采购、合作、咨询、技术开发、保密、知识产权、财税服务等商业合同 |
-| 财税范围 | 财税服务合同，以及商业合同中的税费、发票、含税价格等安排 |
-| 审查立场 | 用户选择代表一方，或选择中立审查 |
-| 审查维度 | 合规与效力、完整性与一致性、商业风险、修改建议和替代条款 |
-| 输入语言 | 中文、英文、中英双语合同 |
-| 输出语言 | 中文、英文、中英双语，由用户独立选择 |
-| 界面语言 | 中文或英文，可独立切换，不改变合同、报告语言或当前审查状态 |
-| 输入方式 | DOCX、含文本层的 PDF、粘贴文本 |
-| 补充材料 | 法规、判决、法律意见、研究笔记；附件、邮件内容、报价单、技术需求等交易材料 |
-| 审查模式 | 全面审查、重点审查 |
-| 重点指定 | 条款选择、风险主题选择、自由描述，可组合 |
-| 检索策略 | 分层检索，公开来源加用户补充材料 |
-| 交互 | 合同上下文中的多轮追问 |
-| 修改 | 统一建议清单，用户逐项采纳、拒绝或调整 |
-| 输出文件 | 审查报告 DOCX/PDF；带修订痕迹的合同 DOCX |
-| 数据保存 | 仅当前会话，不建设登录及云端历史库 |
+| Legal systems | Victoria and mainland China, selected by the user and reviewed independently each time |
+| Australian law coverage | Victoria as the review scope, while identifying relevant federal law and necessary connections with other laws |
+| Contract types | Commercial contracts including procurement, cooperation, consulting, technology development, confidentiality, intellectual property and tax/financial services |
+| Tax/financial scope | Tax/financial service contracts and arrangements concerning taxes, invoices and tax-inclusive prices in commercial contracts |
+| Review perspective | Represent a user-selected party or conduct a neutral review |
+| Review dimensions | Compliance and validity, completeness and consistency, commercial risks, amendment suggestions and replacement clauses |
+| Input language | Chinese, English and bilingual Chinese/English contracts |
+| Output language | Chinese, English or bilingual Chinese/English, selected independently by the user |
+| Interface language | Chinese or English, switched independently without changing the contract, report language or current review state |
+| Input methods | DOCX, PDF with a text layer and pasted text |
+| Supporting materials | Legislation, judgments, legal opinions and research notes; transaction materials such as attachments, email text, quotations and technical requirements |
+| Review modes | Comprehensive review and focused review |
+| Focus selection | Clause selection, risk-topic selection and free-text description, in combination |
+| Research strategy | Layered research using public sources and user-supplied materials |
+| Interaction | Multi-turn follow-up within the contract context |
+| Amendments | Unified suggestion list with individual acceptance, rejection or adjustment |
+| Output files | Review report in DOCX/PDF; contract DOCX with tracked changes |
+| Data retention | Current session only, without login or a cloud history database |
 
-### 3.2 不纳入首版
+### 3.2 Outside the Initial Release
 
-- 跨境冲突法的全面解决及两地法律并列对比审查。发现相关联系时提示范围限制。
-- 扫描版 PDF、合同照片及用户材料 OCR。
-- 账户、历史会话恢复、团队权限、多人协同及案件管理。
-- 默认接入 Westlaw、Jade 或其他付费数据库的账户、密码或会话 Cookie。
-- 自动对外发送合同、代表用户谈判、签约、申报或提交法律文件。
-- 保证合同全面合规、保证判例穷尽检索，或给出未经验证的胜诉率、风险概率。
-- 完整税务申报、税额核算、财务审计或完整专利检索等独立专业任务。
+- Comprehensive resolution of cross-border conflict-of-laws issues or parallel comparative review under both jurisdictions. Disclose scope limits when relevant connections arise.
+- Scanned PDFs, contract photographs and OCR of user materials.
+- Accounts, historical session recovery, team permissions, multi-user collaboration and matter management.
+- Default integration using accounts, passwords or session cookies for Westlaw, Jade or other paid databases.
+- Automatically sending contracts externally, negotiating, signing, filing or submitting legal documents on the user's behalf.
+- Guarantees of complete contractual compliance or exhaustive case research, or unverified win rates and risk probabilities.
+- Independent specialist tasks such as complete tax filing, tax calculation, financial auditing or full patent searches.
 
-扫描版用户合同不受支持，不因候选检索组件带有 OCR 功能而扩大输入范围。旧格式 .doc 不默认支持，应提示转换为 DOCX。
+Scanned user contracts are unsupported; a candidate research component's OCR capability does not expand the input scope. Legacy .doc is not supported by default; users should be prompted to convert it to DOCX.
 
-## 4 核心用户流程
+## 4 Core User Journey
 
-1. 在侧边栏输入自己的 OpenAI API key，选择司法区域及输出语言。
-2. 上传一份主合同，或粘贴文本；按需上传多份补充资料，并标注资料类型。
-3. 工具识别合同类型、当事人、适用法律、关键日期及条款结构。
-4. 用户确认或修正识别信息，选择审查立场及全面／重点模式。
-5. 如存在影响整体分析的信息缺口或法律范围差异，先完成澄清。
-6. 启动分阶段审查，显示实际进度；根据风险开展法律与案例检索。
-7. 并排查看合同与风险，点击问题定位原文，展开依据与建议。
-8. 选中条款或风险发起追问；系统结合当前合同、对话及新增事实继续研究。
-9. 将新建议加入统一清单；用户逐项采纳、拒绝或调整。
-10. 核查修改之间的冲突及关联影响，预览后导出报告和修订合同。
+1. Enter an OpenAI API key in the sidebar and select jurisdiction and output language.
+2. Upload one main contract or paste its text; optionally upload multiple supporting materials and label their types.
+3. The tool identifies contract type, parties, governing law, key dates and clause structure.
+4. The user confirms or corrects extracted information and selects perspective and comprehensive/focused mode.
+5. Clarify information gaps or legal-scope differences that affect the overall analysis first.
+6. Start phased review with actual progress; conduct legal and case research based on identified risks.
+7. View contract and risks side by side, select an issue to locate the original text, and expand authorities and suggestions.
+8. Select a clause or risk for follow-up; the system continues research using the current contract, conversation and new facts.
+9. Add new suggestions to the unified list; the user accepts, rejects or adjusts them individually.
+10. Check conflicts and related effects among amendments, preview them, then export the report and revised contract.
 
-用户可在当前会话切换查看结果。明确执行“清除当前会话”后，清除应用控制下的合同、问答、临时索引、修改清单及密钥状态。
+Users can switch between results within the current session. Explicitly choosing “Clear current session” clears contracts, questions and answers, temporary indexes, amendment lists and key state under application control.
 
-## 5 功能需求
+## 5 Functional Requirements
 
-### F01 材料导入与解析
+### F01 Material Import and Parsing
 
-- 一次审查对应一份主合同和零至多份补充资料。合同附件可以作为补充资料关联。
-- 支持 DOCX、含文本层的 PDF、纯文本粘贴；补充材料首版沿用这些格式。邮件可粘贴正文或先导出为支持格式，不直接连接邮箱。
-- 保留段落、条款编号、标题、表格内容及可获得的原始位置。
-- DOCX 使用段落／表格位置作为稳定定位，不承诺与所有 Word 环境页码一致；PDF 使用文件页码和文本位置。
-- 识别中英双语对应条款；无法可靠配对时标记待确认，不强行对齐。
-- 资料须区分主合同、附件、法律依据、交易背景、研究意见等角色，不能将邮件陈述作为法律规则。
-- 遇到空文件、加密文件、扫描件、损坏文件及超出部署限制的材料，说明原因和可行处理方式，不静默截断。
-- 文件大小、总文本量及附件数量上限根据部署测试确定，并在上传前展示。
+- Each review has one main contract and zero or more supporting materials. Contract attachments can be linked as supporting materials.
+- Support DOCX, PDF with a text layer and pasted plain text; supporting materials use these formats in the initial release. Email text can be pasted or exported to a supported format; no direct mailbox connection is provided.
+- Preserve paragraphs, clause numbers, headings, table contents and available original locations.
+- DOCX uses paragraph/table positions as stable locations, without promising identical pagination in every Word environment; PDF uses file page numbers and text positions.
+- Identify corresponding Chinese/English clauses; flag unreliable pairings for confirmation rather than forcing alignment.
+- Distinguish main contract, attachment, legal authority, transaction background and research opinion roles; do not treat email statements as legal rules.
+- For empty, encrypted, scanned, damaged or deployment-limit-exceeding files, explain the reason and practical remedies without silently truncating content.
+- Determine file-size, total-text and attachment-count limits through deployment tests and display them before upload.
 
-### F02 信息确认与审查设置
+### F02 Information Confirmation and Review Settings
 
-- 显示识别出的合同类型、当事人、合同约定法律、关键日期和信息缺口，允许用户修改。
-- 用户选择维州或中国大陆、代表方或中立、输出语言、全面或重点审查。
-- 重点审查支持点选条款、选择主题及自由文字组合；显示最终覆盖范围。
-- 用户选定的司法区域与合同约定法律不同，必须提示差异，由用户确认分析范围后再继续。
-- 选择法院或仲裁机构不自动等同于选择实体适用法律，两者分别提取。
-- 选择维州不意味着排除相关联邦法律，也不意味着仅搜索维州法院。
+- Display identified contract type, parties, contractual governing law, key dates and information gaps, and allow user corrections.
+- Let users select Victoria or mainland China, a represented party or neutrality, output language, and comprehensive or focused review.
+- Focused review combines clause selection, topic selection and free text, and displays the resulting scope.
+- If the selected jurisdiction differs from the contract's governing law, disclose the difference and obtain confirmation of the analysis scope before proceeding.
+- A choice of court or arbitral institution is not automatically a choice of substantive governing law; extract them separately.
+- Selecting Victoria does not exclude relevant federal law or limit research to Victorian courts.
 
-### F03 商业合同审查
+### F03 Commercial Contract Review
 
-通用审查检查主体与授权、定义和合同文件顺序、标的与范围、价款与支付、履行与验收、变更、责任与赔偿、保密与数据、知识产权、期限与终止、通知、适用法律和争议解决等事项，按合同实际内容决定是否适用。
+General review covers parties and authority, definitions and document priority, subject matter and scope, price and payment, performance and acceptance, variations, liability and indemnities, confidentiality and data, intellectual property, term and termination, notices, governing law and dispute resolution, according to the contract's actual contents.
 
-| 合同类别 | 应配置的专项检查方向 |
+| Contract Category | Specialist Checks to Configure |
 |---|---|
-| 采购 | 规格、数量、交付、验收、质量、付款与售后安排 |
-| 合作 | 各方投入、职责、收益、决策、退出及合作成果 |
-| 咨询 | 服务边界、交付物、依赖信息、费用及成果使用 |
-| 技术开发 | 需求与变更、里程碑、验收、源代码、成果归属及维护 |
-| 保密 | 信息范围、例外、允许披露、期限、返还销毁及责任 |
-| 知识产权 | 权属、许可或转让范围、使用限制、第三方权利及终止后处理 |
-| 财税 | 服务边界、资料义务、税费承担、价格口径、发票及责任安排 |
+| Procurement | Specifications, quantity, delivery, acceptance, quality, payment and after-sales arrangements |
+| Cooperation | Contributions, responsibilities, returns, decision-making, exit and joint outputs |
+| Consulting | Service boundaries, deliverables, information dependencies, fees and use of outputs |
+| Technology development | Requirements and variations, milestones, acceptance, source code, ownership of outputs and maintenance |
+| Confidentiality | Information scope, exceptions, permitted disclosure, duration, return/destruction and liability |
+| Intellectual property | Ownership, licence or assignment scope, use restrictions, third-party rights and post-termination treatment |
+| Tax/financial | Service boundaries, information duties, tax allocation, pricing basis, invoicing and liability arrangements |
 
-这些方向属于产品检查清单，不是法律结论。不同司法区域分别维护法律规则及来源，不机械翻译另一地区的规则。
+These topics are product checklists, not legal conclusions. Maintain separate legal rules and sources for each jurisdiction rather than mechanically translating another jurisdiction's rules.
 
-每份报告必须区分四类问题：法律合规或效力、文本完整或一致性、商业利益分配、其他待核实事项。不得将“不利”“不清楚”直接等同于“违法”或“无效”。
+Every report must distinguish four issue categories: legal compliance or validity, textual completeness or consistency, allocation of commercial interests, and other matters requiring verification. Do not equate “unfavourable” or “unclear” with “unlawful” or “invalid”.
 
-专项能力尚未配置或材料不支持判断时，明确显示审查缺口。全面审查指处理整份材料并完成关联检查，不代表覆盖所有潜在法律、行业与财税义务。
+Where specialist capability is not configured or the materials do not support a judgment, show the review gap explicitly. Comprehensive review means processing the full materials and related checks, not covering every potential legal, industry or tax/financial obligation.
 
-### F04 分层法律检索与核验
+### F04 Layered Legal Research and Verification
 
-- 首次审查核对主要法律依据，并对重要法律风险寻找相关案例。
-- 追问涉及新争点、法律适用或时效变化时，进一步检索；已有经核验材料可复用并标明日期。
-- 检索主题可来自合同类型、具体条款、用户关注点及已发现的风险。
-- 使用问题摘要、必要事实及脱敏关键词检索，避免将整份合同或无关身份信息发送给搜索服务。
-- 搜索摘要仅用于发现来源；最终法律结论须基于实际取得的正文或明确标记的材料片段。
-- 重要来源记录发布者、区域、文件名称、案名／引注或法条位置、正文摘录、网址、检索时间及核验状态。
-- 法规核对适用时间、版本、实施及过渡安排；不能简单用最新版本替换事实发生时的版本。
-- 案例研究考虑后续处理、不利观点及事实差异。无法完成后续处理核查时单独披露。
-- 来源存在、原文取得、命题支持、适用范围、时效核查分别记录，不用一个“已验证”标签代替全部检查。
-- 未找到依据时保留疑点并标记待核实，说明检索范围和缺口；不得虚构法条、案名、段落或链接。
-- 搜索不可用、正文不可取得、无匹配结果和核验未完成属于不同状态，分别提示。
-- 预置材料或用户上传资料可作为补充，但须标明来源、时间和是否经过独立核对，不能伪装成当次联网结果。
+- Check principal authorities during the initial review and seek relevant cases for important legal risks.
+- Conduct further research when follow-ups introduce new issues, legal application questions or changes in currency; verified materials may be reused with their dates stated.
+- Research topics may arise from contract type, specific clauses, user concerns and identified risks.
+- Search with issue summaries, necessary facts and de-identified keywords, avoiding transmission of the whole contract or irrelevant identity information to search services.
+- Search summaries are for source discovery only; final legal conclusions must rest on text actually obtained or explicitly labelled excerpts.
+- Record publisher, jurisdiction, document title, case name/citation or statutory location, text extracts, URL, retrieval time and verification status for important sources.
+- Check the relevant time, version, commencement and transitional arrangements for legislation; do not simply substitute the latest version for the version applicable to the facts.
+- Consider subsequent treatment, adverse views and factual differences in case research. Disclose separately when subsequent treatment cannot be checked.
+- Record source existence, text retrieval, proposition support, scope and currency checks separately rather than replacing all checks with a single “verified” label.
+- If no authority is found, retain the concern as requiring verification and explain research scope and gaps; never invent provisions, case names, paragraphs or links.
+- Search unavailability, inaccessible text, no matching results and incomplete verification are different states and require separate messages.
+- Preloaded or user-uploaded materials may supplement research, but must state origin, date and independent-check status; they cannot be presented as results of the current online search.
 
-中国大陆与维州分别设计来源等级和案例分析方式。大陆案例注明其类型与参考意义；澳洲案例结合相关法院层级、法律问题和后续处理判断作用，不能以简单数值排序代替适用分析。
+Design separate source hierarchies and case-analysis methods for mainland China and Victoria. Identify the type and reference value of mainland cases; assess Australian cases using court hierarchy, the legal issue and subsequent treatment, rather than replacing applicability analysis with a simple numeric ranking.
 
-### F05 风险报告
+### F05 Risk Report
 
-报告包含审查范围、立场、事实与假设、合同概览、覆盖清单、风险摘要、逐项分析、法律来源、待核实事项及后续行动。
+The report contains review scope, perspective, facts and assumptions, contract overview, coverage checklist, risk summary, itemised analysis, legal sources, matters requiring verification and next actions.
 
-每项风险至少包括：编号、原文位置与摘录、问题类别、风险等级、处理建议、判断理由、可能影响、法律依据及状态、替代文本、相关条款、待补充事实。
+Each risk includes at least: identifier, original location and extract, issue category, risk level, recommended handling, reasoning, possible impact, legal basis and status, replacement text, related clauses and missing facts.
 
-风险等级使用高／中／低；处理建议使用优先处理／建议修改／提示关注／待核实等文字。两者分别判断，严重程度和证据充分程度也分别显示。缺少依据的高潜在影响问题，可呈现为“潜在高风险，结论待核实”。
+Risk levels are high/medium/low; handling recommendations use labels such as priority action, amendment recommended, note for attention and verification required. Assess these separately, and also distinguish severity from evidential sufficiency. An issue with potentially high impact but insufficient support may be presented as “potential high risk; conclusion requires verification”.
 
-同一问题涉及多个条款时合并展示并保留关联，避免反复计数。首版不采用未经校准的合同安全总分、法律正确率或概率。
+Combine issues spanning multiple clauses while retaining their relationships and avoiding duplicate counts. The initial release does not use uncalibrated overall contract-safety scores, legal-accuracy rates or probabilities.
 
-### F06 多轮条款追问
+### F06 Multi-turn Clause Follow-up
 
-- 用户可从风险项或合同条款进入对话，也可直接输入问题。
-- 每次回答结合当前合同版本、审查立场、相关条款、已确认事实、此前问答和有效来源。
-- 问题涉及合同其他部分时自动读取关联条款，不能孤立解释选中段落。
-- 新增用户陈述标记为用户补充事实，与原文、推断、已确认事实分开。
-- 回答包括直接回应、合同依据、法律依据与适用分析、修改或核实方向。
-- 对话中的替代条款可加入统一修改清单，保留产生它的问题和依据。
-- 新事实推翻旧分析时，标记相关结论和建议需要更新，不静默沿用旧结论。
-- 长对话通过结构化事实记录和摘要维持上下文；摘要不得替代合同原文与引用正文。
+- Users can enter a conversation from a risk item or contract clause, or type a question directly.
+- Each answer combines the current contract version, review perspective, relevant clauses, confirmed facts, earlier questions and answers, and valid sources.
+- Automatically read related clauses when a question concerns other parts of the contract; do not interpret a selected paragraph in isolation.
+- Label new user statements as user-supplied facts, separate from original text, inferences and confirmed facts.
+- Answers include a direct response, contractual basis, legal basis and applicability analysis, and amendment or verification directions.
+- Replacement clauses proposed in conversation can enter the unified amendment list, retaining their originating question and authorities.
+- When new facts undermine earlier analysis, mark affected conclusions and suggestions for updating rather than silently retaining them.
+- Maintain long-conversation context through structured fact records and summaries; summaries must not replace original contract text or quoted source text.
 
-### F07 信息不足与材料冲突
+### F07 Insufficient Information and Conflicting Materials
 
-信息缺口分情况处理：影响整体审查的关键信息先追问；仅影响个别条款的缺口在报告中标记，并限制对应结论。
+Handle information gaps according to their effect: ask first about key information affecting the whole review; flag gaps affecting individual clauses in the report and limit the corresponding conclusions.
 
-材料冲突单独列出：显示双方原文、来源位置、冲突内容、可能影响及待确认问题。例如合同与邮件对知识产权归属表述不同，不自动认定邮件优先或合同优先。
+List material conflicts separately, showing both original texts, source locations, the conflict, possible effects and questions to confirm. For example, differing IP ownership statements in a contract and an email do not automatically establish priority for either document.
 
-关键冲突须由用户确认事实或研究假设后，才形成受影响的判断和修改建议；不受冲突影响的分析可继续。确认事实不等于确认某份文件具有更高法律效力，法律效果仍需独立分析。无法澄清的冲突保持待核实，不输出确定结论。
+Affected judgments and amendments require user confirmation of facts or research assumptions for key conflicts; unaffected analysis may proceed. Confirming facts does not confirm a document's superior legal effect, which still requires separate analysis. Unresolved conflicts remain subject to verification, without definitive conclusions.
 
-### F08 统一修改清单
+### F08 Unified Amendment List
 
-- 初次审查和追问建议统一管理，保留建议来源及版本。
-- 每项显示原文、替代文本、理由、依据、影响及关联修改。
-- 用户可采纳、拒绝、编辑或暂不决定；仅采纳项进入修订合同。
-- 新建议替代旧建议时标记替代关系，不覆盖用户已编辑文本。
-- 同一原文存在互斥建议，或定义、编号、交叉引用受影响时，先提示用户处理。
-- 已采纳建议受新事实影响时，要求重新确认后才进入最终导出。
-- 用户自行编辑的文本明确标记，未经复核不得显示为已完成法律核验。
-- 导出前展示采纳数量、未决冲突及改动预览；未解决的修改冲突阻止相关修订写入。
+- Manage initial-review and follow-up suggestions together, retaining origin and version.
+- Show original text, replacement, reasons, authorities, effects and related amendments for each item.
+- Users may accept, reject, edit or defer; only accepted items enter the revised contract.
+- Mark replacement relationships when a new suggestion supersedes an old one; do not overwrite user-edited text.
+- Prompt users to resolve mutually exclusive suggestions for the same text or effects on definitions, numbering and cross-references.
+- Require reconfirmation before final export when new facts affect accepted suggestions.
+- Clearly identify user-edited text and do not label it legally verified without review.
+- Before export, show acceptance counts, unresolved conflicts and an amendment preview; unresolved amendment conflicts prevent the affected changes from being written.
 
-### F09 双语处理
+### F09 Bilingual Processing
 
-- 合同语言、司法区域、输出语言独立设置。
-- 支持中文、英文和中英双语报告与问答，法律引用保留原文，翻译与原文区分。
-- 双语合同检查权利义务、金额、期限、条件、术语及语言优先条款是否一致。
-- 默认替代文本跟随对应合同条款语言。双语合同的对应修改须成对展示并选择。
-- 单语合同选择双语报告，不自动生成整份双语合同；报告可提供翻译，但不插入为新的约定文本。
+- Configure contract language, jurisdiction and output language independently.
+- Support Chinese, English and bilingual reports and answers; retain legal quotations in their original language and distinguish translations.
+- Check bilingual contracts for consistency of rights and obligations, amounts, periods, conditions, terminology and language-priority clauses.
+- Replacement text follows the corresponding contract clause's language by default. Corresponding changes in a bilingual contract must be displayed and selected as pairs.
+- Selecting a bilingual report for a monolingual contract does not automatically create a full bilingual contract; translations may appear in the report but are not inserted as new agreed text.
 
-### F10 导出与格式保留
+### F10 Export and Format Preservation
 
-- 审查报告支持 DOCX 和 PDF，包含选定语言、风险、依据、来源状态、限制及修改清单快照。
-- 修订合同为 DOCX，采用 Word 可识别的插入、删除等修订记录，不以颜色或删除线模拟修订。
-- DOCX 输入尽量保留标题、编号、表格、页眉页脚及其他原有排版，修改须定位到正确原文。
-- PDF 和粘贴文本需重建 Word 排版，导出前明确说明。
-- 新增、删除条款及编号变化需检查交叉引用；无法可靠更新时标记人工处理。
-- 遇到原文已有修订、复杂表格、文本框、嵌入对象或无法精确定位的片段，先提示具体限制，禁止错位写入或静默丢失内容。
-- 无法可靠完成带修订痕迹的导出时可提供单独修改清单，但该次不算满足修订合同验收。
-- 验收必须检查生成文件能正常打开、修订可接受／拒绝、采纳结果正确及排版可读。
+- Review reports support DOCX and PDF, containing selected language, risks, authorities, source status, limitations and an amendment-list snapshot.
+- Revised contracts use DOCX with Word-recognised insertion/deletion revisions, not simulated changes using colour or strikethrough.
+- Preserve DOCX headings, numbering, tables, headers, footers and other original layout as far as possible; locate amendments in the correct original text.
+- PDF and pasted text require reconstructed Word layout, disclosed before export.
+- Check cross-references after clause additions/deletions or numbering changes; flag manual handling where reliable updates are impossible.
+- For existing revisions, complex tables, text boxes, embedded objects or imprecisely located passages, explain specific limitations first and prohibit misplaced edits or silent content loss.
+- If tracked-change export cannot be completed reliably, a separate amendment list may be provided, but that run does not satisfy revised-contract acceptance criteria.
+- Acceptance checks must confirm files open normally, revisions can be accepted/rejected, accepted results are correct and layout is readable.
 
-## 6 页面与交互设计
+## 6 Page and Interaction Design
 
-### 6.1 页面结构
+### 6.1 Page Structure
 
-首版优先优化桌面浏览器。使用前确认页与审查工作台两个主要状态。
+Prioritise desktop browsers for the initial release. Use two main states: pre-review confirmation and the review workbench.
 
-| 区域 | 内容 |
+| Area | Content |
 |---|---|
-| 左侧设置栏 | API Credentials 模块、司法区域、语言、审查立场、模式、材料管理及清除会话 |
-| 审查前主区 | 上传／粘贴、补充材料分类、识别信息确认、重点设置及开始按钮 |
-| 工作台左区 | 合同原文、目录、关键词搜索、选中条款、风险定位 |
-| 工作台右区 | 风险清单、条款追问、修改建议三个切换视图 |
-| 顶部状态区 | 当前合同、审查范围、运行阶段、完成与失败状态 |
-| 导出入口 | 报告下载、修改预览及修订合同下载 |
+| Left settings sidebar | API Credentials module, jurisdiction, language, perspective, mode, material management and clear session |
+| Pre-review main area | Upload/paste, supporting-material classification, extracted-information confirmation, focus settings and start button |
+| Workbench left area | Original contract, contents, keyword search, selected clause and risk location |
+| Workbench right area | Switchable risk list, clause follow-up and amendment suggestions |
+| Top status area | Current contract, review scope, execution stage, completion and failure status |
+| Export entry | Report download, amendment preview and revised-contract download |
 
-选择风险项定位左侧原文；选择条款可发起追问。点击法律引用打开来源详情，显示摘录、位置、链接、核验状态和日期。窄屏改为上下布局或切换视图，保持相同操作逻辑。
+Selecting a risk locates the original text on the left; selecting a clause enables follow-up. Clicking a legal citation opens source details, including extract, location, link, verification status and date. Narrow screens use a vertical layout or switchable views with the same interaction logic.
 
-首版仅当前会话，不显示会误导用户的“历史项目”“已永久保存”等入口。
+The initial release is session-only and must not display misleading entries such as “Historical projects” or “Permanently saved”.
 
-### 6.2 视觉方向
+### 6.2 Visual Direction
 
-界面提供独立的中文／英文切换，覆盖菜单、按钮、设置、确认表单、工作台标签及状态提示。界面语言与报告／回答语言分别设置；切换界面不重新调用模型，不丢失合同和修改选择，也不自动翻译已经生成的法律分析。
+Provide independent Chinese/English switching across menus, buttons, settings, confirmation forms, workbench labels and status messages. Configure interface and report/answer languages separately; changing the interface does not call the model, discard the contract or amendment selections, or automatically translate existing legal analysis.
 
-- 参考 Mike 的文档审查与对话工作方式，延续既有 Juriscloud 的浅天蓝、云朵和呼吸加载语言。
-- 浅天蓝背景、白色文档与卡片、深蓝灰正文、蓝色主操作。建议设计起点：背景 #F5F9FF、边框 #D9E7F7、深色文字 #17365F；最终以可读性检查调整。
-- 云朵 emoji 用于欢迎、空白状态及运行提示，避免占据正文阅读空间。
-- 加载采用轻微云朵呼吸和内容淡入，尊重减少动态效果设置，并提供关闭动效选项。
-- 高中低风险同时使用文字、图标与颜色，不依赖颜色单独表达。
-- 展示可核实的步骤、检索状态和结果，不显示模型隐藏推理，也不制造虚假的检索进度。
+- Draw on Mike's document-review and conversation workflow while retaining Juriscloud's light sky blue, clouds and breathing loading animation.
+- Use light sky-blue backgrounds, white documents/cards, dark blue-grey text and blue primary actions. Suggested starting tokens: background #F5F9FF, border #D9E7F7, dark text #17365F; refine through readability checks.
+- Use cloud emoji for welcome, empty states and execution messages without taking space from body-text reading.
+- Use gentle cloud breathing and content fades while respecting reduced-motion settings and providing an animation-off option.
+- Express high/medium/low risks with text, icons and colour together, not colour alone.
+- Show verifiable steps, research status and results; do not expose hidden model reasoning or fabricate research progress.
 
-## 7 AI 工作流与程序控制
+## 7 AI Workflow and Program Control
 
-### 7.1 首次完整审查
+### 7.1 Initial Comprehensive Review
 
-采用六次有独立任务和结构化输出的模型调用。下列步骤为实施方案，具体提示词及模型选择需在开发中验证。
+Use six model calls with distinct tasks and structured outputs. The steps below are the implementation plan; specific prompts and model choices require development validation.
 
-| 调用 | 输入与任务 | 交付下一步的结果 |
+| Call | Input and Task | Output Passed to the Next Step |
 |---|---|---|
-| 1 理解材料 | 合同、背景资料、用户设置；提取结构并识别缺口及冲突 | 合同地图、事实记录、缺口与冲突清单 |
-| 2 审查规划 | 经用户确认的信息；梳理四维风险候选与研究需求 | 审查覆盖表、争点及检索计划 |
-| 3 依据整理 | 程序取得的来源正文；提炼规则、相关性和适用限制 | 来源证据包、支持与不利依据、未完成核查 |
-| 4 应用与修改 | 合同原文、事实、证据包；分析风险并拟替代文本 | 风险项目、条款建议及关联影响 |
-| 5 独立复核 | 草稿及原始证据；检查引用支持、适用范围、反向观点和修改冲突 | 缺陷清单及修正要求 |
-| 6 修正与报告 | 前述结果及复核意见；修正或降级不可靠结论 | 结构化最终报告、待核实事项及修改清单 |
+| 1 Understand materials | Contract, background and user settings; extract structure and identify gaps/conflicts | Contract map, fact record and gap/conflict list |
+| 2 Plan review | User-confirmed information; identify four-dimensional risk candidates and research needs | Review coverage table, issues and research plan |
+| 3 Organise authorities | Source text retrieved by the program; extract rules, relevance and applicability limits | Source evidence pack, supporting/adverse authorities and incomplete checks |
+| 4 Apply and amend | Original contract, facts and evidence pack; analyse risks and draft replacements | Risks, clause suggestions and related effects |
+| 5 Independent review | Draft and original evidence; check citation support, scope, contrary views and amendment conflicts | Defect list and correction requirements |
+| 6 Correct and report | Prior results and review comments; correct or qualify unreliable conclusions | Structured final report, verification items and amendment list |
 
-第 1 次调用后若需确认，暂停并在用户确认后继续当前流程，不重复已完成调用。长合同可按部分增加调用，但必须有全文覆盖清单及跨条款检查。
+If confirmation is needed after call 1, pause and resume the same workflow after confirmation without repeating completed calls. Long contracts may require additional calls by section, with a whole-document coverage checklist and cross-clause checks.
 
-网页搜索、正文读取、文件解析不计作独立 AI 调用。一次请求内要求模型写出六个步骤，也不计作六次调用。
+Web searches, source-text retrieval and file parsing do not count as independent AI calls. Asking a model to write six steps inside one request does not count as six calls.
 
-### 7.2 追问分析
+### 7.2 Follow-up Analysis
 
-实质性追问按五次独立调用组织：理解争点及缺口、生成研究计划、阅读实际检索材料、分析并提出建议、复核修正后回答。导出、切换语言显示或选择修改等界面操作不机械触发五次调用。
+Organise substantive follow-ups into five independent calls: understand the issue and gaps, generate a research plan, read actual retrieved materials, analyse and propose suggestions, and review/correct the answer. Interface operations such as export, display-language switching or amendment selection do not mechanically trigger five calls.
 
-应用记录实际调用数及阶段。参数校验失败、用户取消、网络中断属于未完成运行，不得标记为已完成五次调用的分析。对“每次运行”的最终评估口径如课堂另有说明，应以教师要求调整。
+Record actual call counts and stages. Parameter-validation failures, user cancellation and network interruption are incomplete runs and must not be labelled analyses completing five calls. If the course defines “each run” differently, align the final assessment approach with the instructor's requirements.
 
-### 7.3 条件判断与有限循环
+### 7.3 Conditions and Bounded Loops
 
-- 密钥缺失或无效：阻止模型运行并提示修正。
-- 全局关键事实或法律范围未确认：暂停相关分析。
-- 局部缺口：继续其他事项，将相关结论标记待核实。
-- 资料冲突：按 F07 处理，不允许模型自行确定关键事实。
-- 来源不足：可改写检索词补查，仍不足则保留限制，不编造依据。
-- 复核失败：修正或补充检索；达到运行预算后将未解决结论降级为待核实。
-- 所有检索和反思循环必须有次数、时间或费用上限；默认建议最多两轮补查／修正，具体数值经测试确定。
+- Missing or invalid key: block model execution and prompt correction.
+- Unconfirmed global key facts or legal scope: pause affected analysis.
+- Local gap: continue other matters and mark affected conclusions for verification.
+- Conflicting materials: follow F07; the model may not determine key facts itself.
+- Insufficient sources: refine search terms and research further; if still insufficient, retain limitations without inventing authorities.
+- Failed review: correct or research further; once the run budget is reached, downgrade unresolved conclusions to requiring verification.
+- All search and reflection loops require call, time or cost limits; a suggested default is at most two supplementary research/correction rounds, with exact values determined through testing.
 
-独立复核使用单独模型请求、原始证据和明确检查清单；它是质量控制环节，不代表具有独立法律专家背书，也不保证消除错误。
+Independent review uses a separate model request, original evidence and an explicit checklist. It is a quality-control step, not independent legal-expert endorsement or a guarantee of error elimination.
 
-## 8 系统与数据设计建议
+## 8 Suggested System and Data Design
 
-### 8.1 系统模块
+### 8.1 System Modules
 
-以 Streamlit 页面承载产品，后端模块分为文件解析、会话状态、合同结构化、材料检索、外部来源适配、法律分析、引用核查、建议管理和导出。复用课堂代码前评估适用性；不直接复制一套已完成相同法律任务的应用作为提交成果。
+Use Streamlit for the product interface, with backend modules for file parsing, session state, contract structuring, material retrieval, external-source adapters, legal analysis, citation checks, suggestion management and export. Assess classroom code before reuse; do not submit a directly copied application already performing the same legal task.
 
-候选检索采用关键词加语义检索，保留元数据。向量索引、缓存和文件限于当前会话，避免不同用户的合同相互混入。检索组件通过统一接口替换，单个网站失败不使全部审查结果丢失。
+Candidate retrieval combines keywords and semantic search while retaining metadata. Limit vector indexes, caches and files to the current session to prevent contracts from different users mixing. Replace retrieval components through a unified interface; failure of one website must not discard all review results.
 
-### 8.2 最小数据对象
+### 8.2 Minimum Data Objects
 
-| 对象 | 关键字段 |
+| Object | Key Fields |
 |---|---|
-| ReviewSession | 会话编号、设置、范围、当前阶段、调用记录 |
-| Document | 编号、角色、名称、类型、语言、内容指纹、解析状态 |
-| Clause | 稳定编号、原始编号、正文、段落／表格／页码位置、语言关联 |
-| Fact | 内容、材料来源、用户确认状态、时间、冲突关联 |
-| Source | 来源类型、发布者、区域、版本、引注、正文、定位、网址、检索时间和核验状态 |
-| Risk | 类别、关联条款、等级、影响、处理建议、依据、待核实事项 |
-| Suggestion | 原文定位、替代文本、理由、关联依据、版本、来源问题及采纳状态 |
-| Conflict | 冲突材料与原文、影响范围、用户回应、未决状态 |
-| Message | 对话轮次、关联条款、事实更新、引用及新增建议 |
-| ExportSnapshot | 导出时的设置、报告版本、采纳建议和核验状态 |
+| ReviewSession | Session identifier, settings, scope, current stage and call records |
+| Document | Identifier, role, name, type, language, content fingerprint and parsing status |
+| Clause | Stable identifier, original number, text, paragraph/table/page location and language relationships |
+| Fact | Content, material source, user-confirmation status, time and conflict relationships |
+| Source | Type, publisher, jurisdiction, version, citation, text, location, URL, retrieval time and verification status |
+| Risk | Category, related clauses, level, impact, handling recommendation, support and verification items |
+| Suggestion | Original location, replacement, reason, related support, version, originating question and acceptance state |
+| Conflict | Conflicting materials/texts, affected scope, user response and unresolved status |
+| Message | Conversation turn, related clauses, fact updates, citations and new suggestions |
+| ExportSnapshot | Settings at export, report version, accepted suggestions and verification status |
 
-全文片段和法律材料被视为数据，不允许其中夹带的指令覆盖系统流程、读取其他用户资料、泄露密钥或改变审查范围。
+Treat contract excerpts and legal materials as data. Instructions embedded in them may not override system workflow, access other users' materials, disclose keys or alter review scope.
 
-## 9 开源项目采用计划
+## 9 Open-source Adoption Plan
 
-以下为参考与候选组件，不表示已经安装、联网测试或完成集成。项目自述的功能、准确率、速度与合规声明不直接作为本产品承诺。
+The following are references and candidate components, not claims of installation, online testing or completed integration. Project claims about features, accuracy, speed or compliance do not become product commitments.
 
-| 项目 | 拟参考或采用 | 首版决策与验证 |
+| Project | Proposed Reference or Use | Initial Release Decision and Validation |
 |---|---|---|
-| [legal-research-skill](https://github.com/Golden2002/legal-research-skill) | 争点到检索词、法源分类、时效和引用核验 | 改造为大陆研究模块，不照搬无条件追问或付费数据库配置流程 |
-| [china-lawyer-analyst](https://github.com/CSlawyer1985/china-lawyer-analyst) | 结构化适用、领域路由、分析后校验 | 提取与合同、知识产权相关方法；法条和案例须另行核实 |
-| [LexiLaw](https://github.com/CSHaitao/LexiLaw) | 中文法律问答和知识库增强思路 | 项目声明限制真实法律场景使用，不将其模型直接作为本产品实际使用基础 |
-| [Mike](https://github.com/open-legal-products/mike) | 文档审查、追问、修改操作的工作台体验 | 自行实现适合作业的流程，不照搬其整套系统；美国案例检索不直接适用两地任务 |
-| [legal-templates](https://github.com/General-Legal/legal-templates) | 模板结构、遗漏检查与替代措辞 | 模板不是法律依据；使用前检查司法区域和交易适配，保留相应许可信息 |
-| [ai-legal-claude](https://github.com/zubair-trabzada/ai-legal-claude) | 风险排序、缺失条款、替代条款思路 | 不采用未经验证的速度、金额、准确率和安全评分承诺 |
-| [AustralianLegal](https://github.com/gordoncprice/AustralianLegal) | 区域识别、官方来源规划、法律时效与独立复核 | 用作澳洲研究方法参考，不当作现成检索引擎；商业合同规则需补充 |
-| [auslaw-mcp](https://github.com/tealou/auslaw-mcp) | AustLII 检索、全文读取、段落和引注定位 | 候选检索组件；须验证服务可用性、来源访问条件、部署兼容性与引用输出 |
+| [legal-research-skill](https://github.com/Golden2002/legal-research-skill) | Issue-to-query mapping, source classification, currency and citation verification | Adapt for mainland research; do not copy unconditional questioning or paid-database configuration workflows |
+| [china-lawyer-analyst](https://github.com/CSlawyer1985/china-lawyer-analyst) | Structured application, domain routing and post-analysis validation | Extract contract/IP methods; independently verify provisions and cases |
+| [LexiLaw](https://github.com/CSHaitao/LexiLaw) | Chinese legal Q&A and knowledge-base augmentation | The project's stated restrictions concern real legal use; do not use its model directly as the foundation for practical product use |
+| [Mike](https://github.com/open-legal-products/mike) | Workbench experience for document review, follow-up and amendments | Implement an assignment-appropriate workflow independently rather than copying the full system; US case research does not directly fit either jurisdiction |
+| [legal-templates](https://github.com/General-Legal/legal-templates) | Template structure, omissions checks and replacement wording | Templates are not authorities; check jurisdiction and transaction fit before use and retain applicable licence information |
+| [ai-legal-claude](https://github.com/zubair-trabzada/ai-legal-claude) | Risk ordering, missing clauses and alternative wording | Do not adopt unverified promises about speed, amounts, accuracy or safety scores |
+| [AustralianLegal](https://github.com/gordoncprice/AustralianLegal) | Jurisdiction identification, official-source planning, legal currency and independent review | Use as an Australian research-method reference, not a ready-made search engine; supplement commercial-contract rules |
+| [auslaw-mcp](https://github.com/tealou/auslaw-mcp) | AustLII search, full-text retrieval and paragraph/citation locations | Candidate component; verify availability, source-access conditions, deployment compatibility and citation output |
 
-### 9.1 澳洲组件的具体约束
+### 9.1 Specific Constraints for Australian Components
 
-- AustralianLegal 是指令型研究流程包，不自带完整网络检索能力。参考其区域与法源方法，服务于本产品已确认的审查范围。
-- auslaw-mcp 是 TypeScript MCP 服务，与 Python Streamlit 之间需要适配和运行环境验证，不能假设放入仓库后即可使用。
-- 其法院权重排序只是工程排序，不能直接决定维州争点的约束力。
-- 引注能解析、链接存在或段落找到，不等于判决支持命题、仍具效力或适用于该合同。
-- 公开检索路径先评估；不采用需要用户提供 Jade 会话 Cookie 的路径作为首版依赖。
-- 官方法规与法院正文核验需独立来源适配；候选组件目前的来源范围不能替代全部官方核查。
+- AustralianLegal is an instruction-based research workflow package without complete built-in online search. Use its jurisdiction/source methods within the confirmed product scope.
+- auslaw-mcp is a TypeScript MCP service requiring adapter and runtime validation with Python Streamlit; adding it to the repository does not make it immediately usable.
+- Its court-weight ranking is an engineering ordering, not a direct determination of binding authority on a Victorian issue.
+- Parsing a citation, finding a link or locating a paragraph does not establish that a judgment supports a proposition, remains good law or applies to the contract.
+- Assess public research routes first; do not make a route requiring user-supplied Jade session cookies an initial-release dependency.
+- Official legislation and court text need independent source adapters; candidate-component coverage cannot replace all official checks.
 
-### 9.2 采用前检查
+### 9.2 Checks Before Adoption
 
-固定所用版本或提交，记录借鉴文件、改造点和许可证。Mike 仓库标示 AGPL-3.0，模板库标示 CC0；其余内容以具体版本及子目录许可为准。采用代码前检查依赖、日志、外部数据发送和访问要求。
+Pin versions or commits and record referenced files, adaptations and licences. Mike identifies AGPL-3.0 and the template library CC0; other content depends on the specific version and subdirectory licence. Check dependencies, logging, external data transmission and access requirements before adopting code.
 
-当前仅完成对项目说明和部分关键文件的阅读。首次开发里程碑须运行代表性搜索、正文读取和引注核查，才可把候选组件状态改为已验证。
+Only project descriptions and selected key files have been read so far. The first development milestone must execute representative searches, text retrieval and citation checks before marking a candidate component verified.
 
-## 10 数据与运行要求
+## 10 Data and Operational Requirements
 
-- 使用者通过作业指定的 API Credentials 侧边栏模块提供自己的 OpenAI key，不内置开发者付费密钥。
-- 密钥不进入代码仓库、报告、日志、下载包或共享缓存。敏感状态仅限当前用户会话。
-- 不持久保存合同及问答历史；临时文件和索引应显式清理，不能只依赖浏览器关闭事件。
-- 不承诺浏览器关闭时所有外部数据即时删除。模型和检索服务可能接收必要内容，界面应说明实际数据路径及第三方处理情况。
-- 运行日志默认仅记录阶段、耗时、错误类别和调用数，不记录合同正文及秘密信息。
-- 每个会话隔离原文、索引、对话和导出文件；共享缓存只允许不含用户秘密的公开法律材料。
-- 展示真实阶段、超时及可重试错误；不要求用户无限等待或从头重复所有已完成工作。
-- 有费用相关信息时显示实际可获得的用量或明确标注估算，不在未测试前承诺固定金额或耗时。
-- UI 支持键盘操作、清晰焦点、文字对比和减少动效；文档阅读区域不被装饰遮挡。
+- Users supply their own OpenAI key through the assignment-specified API Credentials sidebar module; no developer-funded key is embedded.
+- Keys must not enter the repository, reports, logs, download packages or shared caches. Sensitive state is limited to the current user's session.
+- Do not persist contracts or conversation history; explicitly clean temporary files and indexes rather than relying solely on browser-close events.
+- Do not promise immediate deletion of all external data on browser closure. Model and research services may receive necessary content; explain actual data paths and third-party processing in the interface.
+- Default logs record stages, duration, error categories and call counts, not contract text or secrets.
+- Isolate originals, indexes, conversations and exports by session; shared caches may contain only public legal materials without user secrets.
+- Show actual stages, timeouts and retryable errors; do not require indefinite waiting or repeating all completed work from the beginning.
+- Where cost information is available, show actual obtainable usage or clearly labelled estimates; do not promise fixed cost or duration before testing.
+- Support keyboard operation, visible focus, text contrast and reduced motion; decorative content must not obscure document reading.
 
-## 11 验收标准
+## 11 Acceptance Criteria
 
-| 编号 | 验收条件 |
+| ID | Acceptance Condition |
 |---|---|
-| A01 | DOCX、文本 PDF、粘贴文本均能进入确认页；扫描件等不支持输入有清晰提示 |
-| A02 | 用户可修正合同类型、当事人、约定法律、立场及审查范围 |
-| A03 | 选定区域与合同法律不同会提示差异，确认前不形成受影响的正式分析 |
-| A04 | 所有约定商业合同类别均有可见的通用及专项覆盖状态，缺口不被隐瞒 |
-| A05 | 报告区分四类问题，逐项显示等级、处理建议、理由和原文位置 |
-| A06 | 首次完成审查至少六次独立模型调用；实质追问按至少五次调用流程运行，有真实记录 |
-| A07 | 可从报告回到实际来源和段落，未知或不足的依据显示待核实，不伪造引用 |
-| A08 | 关键材料冲突单列，用户确认后才形成受影响的判断；其他分析可继续 |
-| A09 | 多轮追问正确继承当前合同与立场，新增事实导致相关旧建议重新检查 |
-| A10 | 首次和追问建议统一管理，采纳／拒绝／编辑正确生效，冲突不被同时写入 |
-| A11 | 中文、英文及双语输出可选，双语合同含义差异有定位和说明 |
-| A12 | 报告 DOCX/PDF 正常打开；修订 DOCX 包含真实修订，逐项接受／拒绝结果正确 |
-| A13 | 未采纳建议不写入修订合同；DOCX 格式保留经视觉检查，限制明确展示 |
-| A14 | 桌面并排、窄屏切换正常；云朵动效可减弱或关闭，风险不只靠颜色表达 |
-| A15 | 清除当前会话后相关文件、问答和密钥状态不可继续从应用访问；不同会话互不串用 |
-| A16 | Streamlit Cloud URL 可用，教师输入自己的 key 后可完成提交用测试 |
+| A01 | DOCX, text PDF and pasted text reach confirmation; unsupported inputs such as scans receive clear messages |
+| A02 | Users can correct contract type, parties, agreed law, perspective and review scope |
+| A03 | Differences between selected jurisdiction and contractual law are disclosed; affected formal analysis is withheld until confirmation |
+| A04 | Every agreed commercial-contract category has visible general/specialist coverage status without concealed gaps |
+| A05 | Reports distinguish four issue categories and show level, handling recommendation, reasoning and original location for each |
+| A06 | A completed initial review has at least six independent model calls; substantive follow-ups follow at least five calls, with actual records |
+| A07 | Reports link back to actual sources and paragraphs; unknown/insufficient support is marked for verification without fabricated citations |
+| A08 | Key material conflicts are listed separately, with affected judgments made after user confirmation; other analysis can continue |
+| A09 | Multi-turn follow-ups inherit the current contract and perspective; new facts cause affected earlier suggestions to be rechecked |
+| A10 | Initial/follow-up suggestions are managed together; acceptance/rejection/editing works correctly and conflicting changes are not written together |
+| A11 | Chinese, English and bilingual output are selectable; meaning differences in bilingual contracts are located and explained |
+| A12 | Report DOCX/PDF files open normally; revised DOCX contains genuine revisions with correct individual acceptance/rejection results |
+| A13 | Unaccepted suggestions are excluded from the revised contract; DOCX format preservation is visually checked and limits clearly displayed |
+| A14 | Desktop side-by-side and narrow-screen switching work; cloud animation can be reduced or disabled and risk is not expressed by colour alone |
+| A15 | Clearing the session makes its files, questions/answers and key state inaccessible through the app; sessions do not mix |
+| A16 | The Streamlit Cloud URL works and the instructor can complete the submission tests using their own key |
 
-不以“答案流畅”单独判定通过。关键检查包括事实提取、来源存在与支持程度、覆盖范围、修改落点及失败状态的诚实呈现。
+Fluent answers alone do not establish a pass. Key checks include fact extraction, source existence and support, coverage, amendment placement and honest presentation of failures.
 
-## 12 三个提交测试案例
+## 12 Three Submission Test Cases
 
-以下为待制作的虚构测试方案，实际合同、补充资料和人工核对表须随代码仓库提供。不得把方案描述当作已经完成测试。
+The following are proposed fictional tests. Actual contracts, supporting materials and human-check sheets must accompany the repository. Describing a plan does not mean testing is complete.
 
-### T01 中国大陆采购合同全面审查
+### T01 Comprehensive Review of a Mainland-China Procurement Contract
 
-材料：中文采购合同 DOCX、报价单 PDF。用户代表买方，中文输出、全面审查。合同包含付款、交付、验收、质量及税费安排；预埋验收时间模糊、附件价格口径冲突等问题。
+Materials: Chinese procurement contract DOCX and quotation PDF. The user represents the buyer and selects Chinese output and comprehensive review. The contract includes payment, delivery, acceptance, quality and tax arrangements, with seeded issues such as ambiguous acceptance timing and conflicting attachment pricing bases.
 
-预期：识别交易和关键条款，区分商业不利与法律疑点，单列价格冲突并要求确认关键事实。确认后完成研究，相关依据可追溯。用户采纳部分建议后导出报告和修订 Word，未采纳项不写入。
+Expected: identify the transaction/key clauses, distinguish commercial disadvantage from legal concerns, list the pricing conflict separately and request confirmation of key facts. After confirmation, complete research with traceable authorities. Export report and revised Word after partial acceptance, excluding unaccepted suggestions.
 
-### T02 维州技术开发合同重点审查与追问
+### T02 Focused Review and Follow-up on a Victorian Technology Development Contract
 
-材料：英文技术开发合同 DOCX、技术需求书及可文本读取的邮件内容。用户代表委托方，选择维州，重点关注成果归属、验收和付款，双语输出。
+Materials: English technology development DOCX, technical requirements and text-readable email contents. The user represents the commissioning party, selects Victoria, focuses on ownership of outputs, acceptance and payment, and requests bilingual output.
 
-预期：合同与背景资料有明确关联，检索范围考虑相关联邦及维州法律，不仅靠 vic 参数过滤。用户追问某项责任条款时读取关联定义，新增建议进入统一清单。模拟原建议被新建议替代，验证重新确认及导出落点。
+Expected: link contract and background materials explicitly; include relevant federal and Victorian law rather than relying only on a vic filter. Read related definitions when the user asks about a liability clause and add new suggestions to the unified list. Simulate a new suggestion replacing an earlier one and verify reconfirmation and export placement.
 
-### T03 中英双语合作合同的边界与失败处理
+### T03 Boundaries and Failure Handling for a Bilingual Cooperation Contract
 
-材料：中英双语合作合同文本 PDF，含保密、知识产权与税费条款；一个语言版本的期限或责任与另一版本不同。用户选择中国大陆、中立审查，合同却约定其他适用法律；另有一份用户提供的旧研究材料。
+Materials: bilingual Chinese/English cooperation contract in text PDF, containing confidentiality, IP and tax clauses, with a period or liability differing between language versions. The user selects mainland China and neutral review, while the contract chooses another governing law; an older user-supplied research document is also provided.
 
-预期：先提示法律范围差异，确认范围后继续；识别双语差异，不直接认定某一文本优先。检查旧资料时效。通过可重复的测试开关模拟检索超时或正文不可取得，报告显示依据不足与待核实，不生成虚构案例；不得将模拟状态描述为真实联网成功。PDF 重建为 Word 的排版限制明确提示。
+Expected: disclose the legal-scope difference and continue after confirmation; identify bilingual differences without automatically prioritising one text. Check the older material's currency. Use a repeatable test switch to simulate research timeout or unavailable text, displaying insufficient support and verification items without fabricated cases; never describe simulated status as genuine online success. Explain PDF-to-Word reconstruction limits.
 
-三个案例分别提供操作步骤、输入文件、人工标注问题、预期行为和实际运行记录。首次检索及追问调用数均应可查。实时检索结果可能变化，因此验收依据可核对的行为与来源，不要求逐字匹配固定答案。
+Each case provides steps, inputs, human-annotated issues, expected behaviour and actual execution records. Call counts for initial research and follow-up must be inspectable. Live results may vary, so acceptance rests on verifiable behaviour and sources rather than exact matches to fixed answers.
 
-## 13 开发与交付顺序
+## 13 Development and Delivery Sequence
 
-| 阶段 | 交付内容 | 进入下一阶段条件 |
+| Phase | Deliverables | Condition for the Next Phase |
 |---|---|---|
-| 1 技术验证 | 凭证模块位置确认、候选澳洲检索实测、两地来源可用性、真实 Word 修订小样 | 部署关键依赖和导出路径明确 |
-| 2 核心流程 | 导入、信息确认、六次调用、结构化风险及引用 | 一个代表性案例完整运行 |
-| 3 研究与交互 | 分层检索、多轮追问、材料冲突和统一修改清单 | 来源及状态正确传递，无建议覆盖错误 |
-| 4 文件与界面 | 并排工作台、浅蓝云朵视觉、双语、报告及修订导出 | 文件与交互验收通过 |
-| 5 部署与评估 | Streamlit Cloud、三个测试案例、README 和运行记录 | 教师可独立访问并运行 |
+| 1 Technical validation | Confirm credential-module location, test candidate Australian research, check source availability in both jurisdictions and create a genuine Word revision sample | Critical deployment dependencies and export path are clear |
+| 2 Core workflow | Import, information confirmation, six calls, structured risks and citations | One representative case completes end to end |
+| 3 Research and interaction | Layered research, multi-turn follow-up, conflicting materials and unified amendment list | Sources/status propagate correctly without overwriting suggestions |
+| 4 Files and interface | Side-by-side workbench, light-blue cloud visuals, bilingual support, report and revision exports | File and interaction acceptance checks pass |
+| 5 Deployment and evaluation | Streamlit Cloud, three test cases, README and execution records | Instructor can independently access and run the app |
 
-先用代表性类别跑通属于开发顺序，不代表擅自取消其他已确认合同类别。若部署资源或组件验证无法满足完整范围，须列出具体影响，由用户决定范围调整，不静默降级。
+Starting with a representative category is a development sequence, not authority to remove other confirmed contract categories. If deployment resources or component validation cannot support the full scope, identify specific effects and let the user decide adjustments rather than silently downgrading scope.
 
-## 14 作业要求对应与提交清单
+## 14 Assignment Mapping and Submission Checklist
 
-依据用户提供的《LAWS90286 - 2026 - A2 - Student Copy.docx》。
+Based on the user-supplied “LAWS90286 - 2026 - A2 - Student Copy.docx”.
 
-| 作业要求 | 本产品对应 |
+| Assignment Requirement | Product Mapping |
 |---|---|
-| 一个明确法律任务 | 商业合同审查，检索与问答作为子流程 |
-| 三个以上独立步骤 | 材料理解、研究、适用、复核、修改和输出 |
-| 每次运行至少五次 AI 调用 | 首次六次；实质追问五次，记录真实调用 |
-| 用户输入 | 合同、补充资料、设置、问题和修改选择 |
-| 用户输出 | 网页报告、对话、依据、修改清单及文档下载 |
-| Streamlit Cloud 部署 | 通过可访问应用 URL 运行 |
-| 指定凭证侧边栏 | 使用者提供自己的 OpenAI key |
-| GitHub 仓库与 README | 应用链接、三个案例、步骤及测试材料 |
+| One defined legal task | Commercial contract review, with research and Q&A as subprocesses |
+| More than three independent steps | Material understanding, research, application, review, amendment and output |
+| At least five AI calls per run | Six initially and five for substantive follow-up, with actual call records |
+| User input | Contract, supporting materials, settings, questions and amendment choices |
+| User output | Web report, conversation, authorities, amendment list and document downloads |
+| Streamlit Cloud deployment | Runs at an accessible application URL |
+| Specified credentials sidebar | Users supply their own OpenAI key |
+| GitHub repository and README | App link, three cases, steps and test materials |
 
-提交前必须完成：
+Required before submission:
 
-- README 写明运行方式、依赖、应用地址、范围及三个测试案例。
-- 提交案例所需全部虚构资料及使用说明。
-- 教师拥有仓库访问权限，应用不依赖开发者个人付费密钥。
-- 保留外部项目的借鉴记录、许可证和自主实现说明。
-- 检查仓库及提交历史不包含密钥或真实敏感合同。
-- 记录最终提交版本与时间。作业说明指出，提交后修改仓库代码可能改变有效提交日期；提交后不得继续修改该提交仓库代码。
+- README states operation, dependencies, app URL, scope and three test cases.
+- Include all fictional materials needed for the submission cases and their instructions.
+- Give the instructor repository access; the app must not depend on the developer's personal paid key.
+- Retain external-project reference records, licences and independent-implementation explanations.
+- Check that repository and history contain no keys or real sensitive contracts.
+- Record the final submission version and time. The assignment states that subsequent repository changes may change the effective submission date; do not continue changing code in the submitted repository after submission.
 
-## 15 尚需验证的实施事项
+## 15 Implementation Items Requiring Validation
 
-以下不影响已确认的产品方向，但不得在完成验证前承诺实现效果：
+These do not change the confirmed product direction, but their outcomes must not be promised before validation:
 
-1. 作业指定模块链接为 https://github.com/stoneman-mls/openai_credentials 。此前访问返回 404，应核对课堂代码或更新地址，不能默认以普通输入框替代。
-2. auslaw-mcp 的实际联网检索、正文读取、引用输出及 Streamlit Cloud 运行方案。
-3. 中国大陆公开来源的程序访问条件、可用性及正文覆盖；用户补充资料的核验流程。
-4. 两地商业合同专项检查清单的人工校核和法律来源维护。
-5. 复杂 DOCX、双语表格及既有修订的保留策略和导出兼容性。
-6. 实测后确定文件上限、运行预算、模型配置、超时和性能目标，不预先承诺准确率或固定速度。
-7. Westlaw 等付费数据库仅保留后续适配位置，须确认 API、学校许可及向模型传输材料的权限。
-8. 产品正式名称待定；首版不因名称未定阻塞开发。
+1. The assignment-specified module link is https://github.com/stoneman-mls/openai_credentials . Earlier access returned 404; check classroom code or an updated address rather than assuming a normal input field is an acceptable substitute.
+2. Actual online search, text retrieval, citation output and Streamlit Cloud execution for auslaw-mcp.
+3. Programmatic access conditions, availability and text coverage of mainland-China public sources; verification of user-supplied materials.
+4. Human validation of specialist commercial-contract checklists and maintenance of legal sources in both jurisdictions.
+5. Preservation and export compatibility for complex DOCX, bilingual tables and existing revisions.
+6. Establish file limits, run budgets, models, timeouts and performance targets after testing, without promising accuracy or fixed speed beforehand.
+7. Leave future adapter points for Westlaw and other paid databases, subject to API, institutional-licence and model-transmission permissions.
+8. The formal product name remains undecided; this does not block initial development.
 
-## 16 后续扩展
+## 16 Future Extensions
 
-完成首版并评估真实使用反馈后，再考虑账户与历史记录、项目导入导出、OCR、更多合同及行业规则、经授权的付费数据源、版本比较、团队协作与 Word 插件。新增能力不得默认为现有首版已支持。
+After completing the initial release and assessing real feedback, consider accounts/history, project import/export, OCR, additional contracts and industry rules, authorised paid sources, version comparison, collaboration and a Word add-in. New capabilities must not be assumed to exist in the initial release.
 
 
-## 2026-10-29 完整性实现增补
-在原至少六次初审基线上加入主题批次（每组六项）与独立遗漏复核。通用主题十项，按识别结果附加采购、合作、咨询服务、开发、保密、知识产权、财税服务或雇佣专项清单；未知类型明确仅做通用检查。雇佣／采购当前示例均为十次结构化请求，加单独检索请求。每项状态、判断理由、可核对引文与后续行动独立保留，不因重点风险表项数较少消失；不足和未记录段落须显示。清单含模型判断，不声称法律事项穷尽或专家核验；法律与实际模型漏项率仍需真实案例评估。
+## 2026-10-29 Completeness Implementation Supplement
+Add topic batches (six items per batch) and an independent omissions review to the original minimum-six-call initial workflow. Ten general topics are supplemented by procurement, cooperation, consulting services, development, confidentiality, IP, tax/financial services or employment checklists according to classification; unknown types explicitly receive general checks only. Current employment/procurement examples each use ten structured requests plus separate search requests. Preserve each item's status, reasoning, verifiable quotations and next actions independently so they do not disappear when the main risk table contains fewer items; insufficient and unrecorded passages must be shown. The checklist includes model judgments and claims neither exhaustive legal coverage nor expert verification; legal quality and actual model omission rates still require real-case evaluation.

@@ -1,134 +1,134 @@
-# 最新要求：右侧聊天区以用户截图为准
+# Latest Requirement: Follow the User's Screenshot for the Right Chat Area
 
-## 2026-10-31 · 分析卡片、复制距离与发送反馈
+## 2026-10-31 · Analysis Cards, Copy-Button Spacing and Submission Feedback
 
-云朵状态卡与分析过程保持 12px 间隙，取消自定义 HTML 被 Streamlit 负段落间距压缩的影响；过程标题加列表图标和左右内边距。复制图标移动到上方面板下 12px，tooltip 改为向下显示。追问使用提交快照，在调用模型前清空输入；错误时恢复草稿。虚构浏览器验收与 94 项工程测试通过，未将其作为真实模型或法律质量证明。
+Keep a 12px gap between the cloud status card and Activity panel, removing the compression caused by Streamlit's negative paragraph spacing around custom HTML; add a list icon and horizontal padding to the Activity heading. Move the copy icon to 12px below the panels and show its tooltip downward. Follow-up uses a submission snapshot and clears input before the model call; restore the draft on error. Browser checks using fictional fixtures and 94 engineering tests passed; these are not evidence of real-model or legal quality.
 
-## 2026-10-30 · 四处动效
+## 2026-10-30 · Four Animation Effects
 
-- 分析：参考用户原“法律AI文档问答Chatbot”的云朵呼吸节奏（1.45 秒、缩放 .82–1.18、透明度 .55–1）。仅在真实分析上下文中出现，成功、异常、取消均清除；保留实际执行步骤，不生成内部思维链。首次审查与追问共用此呈现。
-- 功能介绍：三个功能区域采用浅蓝聚光灯卡片，鼠标坐标驱动光斑；不改变说明内容。帧请求仅随指针事件发生，离开时清除。
-- 主视觉：仅“开始使用／了解功能”两个按钮磁吸，稳定的外层测量区域避免位移反馈抖动，水平最多 12px、垂直最多 8px；离开与键盘焦点恢复，触摸保持正常按钮。
-- 导出：点击立即收缩至 48px 圆形，真实生成期间显示不标百分比的环形加载；Word/PDF 成功生成才展开为“打开”。打开的是实际生成的 PDF，新标签页预览；原 Word、PDF 和可生成的修订合同下载保留。失败停止加载，保留审查，可重试；同一次组件事件不会重复生成文件。没有生产代码中的人为等待。
+- Analysis: follow the cloud-breathing rhythm of the user's earlier “Legal AI Document Q&A Chatbot” (1.45 seconds, scale .82–1.18, opacity .55–1). Display it only within actual analysis and remove it on success, exception or cancellation; retain actual execution steps without generating internal chain-of-thought. Initial review and follow-up share this presentation.
+- Feature introduction: use light-blue spotlight cards for the three feature areas, with pointer coordinates driving the light spot; leave the explanatory content unchanged. Request animation frames only on pointer events and clear the effect on pointer exit.
+- Hero: apply magnetism only to the “Get started / Explore features” buttons. A stable outer measurement area prevents movement-feedback jitter, with maximum horizontal movement of 12px and vertical movement of 8px; reset on pointer exit and keyboard focus, and retain normal buttons on touch devices.
+- Export: clicking immediately contracts the button to a 48px circle, with an indeterminate progress ring during real generation; expand to “Open” only after Word/PDF generation succeeds. Open the actual generated PDF in a new tab; retain downloads for Word, PDF and any supported revised contract. On failure stop loading, retain the review and allow retry; the same component event must not generate files twice. No artificial delays exist in production code.
 
-导出组件使用 Streamlit 1.50 的会话媒体管理器提供普通同源 PDF 地址，与原下载按钮共用既有文件服务；预览采用独立文件名防止 attachment 与 inline 混淆，不写磁盘、不向外部服务发送报告。初版 Blob 预览在浏览器验收环境被拦截，已替换为普通 HTTP 文件预览并实际打开验证。
+The export component uses Streamlit 1.50's session media manager to provide an ordinary same-origin PDF URL, sharing the existing file service with download buttons; a separate preview filename prevents attachment/inline confusion. Reports are neither written to disk nor sent to an external service. The initial Blob preview was blocked in the browser acceptance environment and was replaced with a normal HTTP file preview, which was actually opened and verified.
 
-系统减少动效、工作台“减少动效”和介绍页“暂停动效”均有对应静态呈现。浏览器实测：两按钮有独立磁吸位移；卡片光斑坐标随鼠标变化；暂停后磁吸 transform 为 none、卡片不亮；云朵 animation 为 cloud-breathe / 1.45s，减少动效后为 none。实际点击导出可观察圆形加载、展开与打开，PDF 新页显示五页测试报告。
+System reduced motion, the workbench “Reduce motion” option and the introduction page “Pause animation” option each have static presentations. Browser observations: the two buttons move independently under magnetism; spotlight coordinates follow the pointer; after pausing, magnetic transform is none and cards do not illuminate; the cloud animation is cloud-breathe / 1.45s and becomes none with reduced motion. Actual export clicks show circular loading, expansion and opening; a new PDF tab displays a five-page test report.
 
-84 项测试通过，覆盖云朵完成/失败清理、事件去重、成功/失败/重试导出、实际 Word/PDF 字节、预览媒体类型与部署路径。浏览器使用 output/qa_motion.py 的明确虚构材料和测试网关，没有调用模型；QA 的观察延迟仅存在 output 脚本，不进入运行包。截图：output/cloud-breathing-qa.png、spotlight-card-verified.png、export-ring-generating-qa.png、export-open-ready-qa.png、export-pdf-preview-qa.png。未做手机真机验收。
+84 tests passed, covering cloud cleanup after completion/failure, event deduplication, export success/failure/retry, actual Word/PDF bytes, preview media types and deployment paths. Browser QA used explicitly fictional materials and a test gateway in output/qa_motion.py, without model calls; observation delays exist only in output scripts, outside the runtime package. Screenshots: output/cloud-breathing-qa.png, spotlight-card-verified.png, export-ring-generating-qa.png, export-open-ready-qa.png and export-pdf-preview-qa.png. No physical-phone acceptance checks were performed.
 
-## 2026-10-30 · 浮动表面与设置玻璃效果
+## 2026-10-30 · Floating Surfaces and Glass Settings Panel
 
-本节为最新视觉调整。仅修改 `assets/workspace.css`，保留已确认的聊天结构、轻衬线欢迎标题、浅天蓝、云朵与扁平追问框。
+This section records the latest visual changes. Only `assets/workspace.css` changes, retaining the confirmed chat structure, light serif welcome heading, light sky blue, clouds and flattened follow-up composer.
 
-- 参考本次 Mike 截图的浮动侧栏、留白和柔和阴影，为侧栏与输入框加入分层低对比阴影。侧栏内部表面留边并使用 22px 圆角，不改变 248px 导航占位。
-- 设置面板单独应用 28px 背景模糊、155% 饱和度、半透明浅蓝渐变、白色高光边缘与外部阴影。面板宽 340px，最大宽度受视口限制；表单保持清晰可读。不支持模糊或要求减少透明度时回退实色。
-- 定位到追问按钮 36px 宽与 Streamlit 默认 40px 最小高度冲突。统一约束初始/追问发送按钮的宽、高、最小/最大尺寸为 40px，移除内边距并居中箭头。
-- 阅读用户指定 image-to-code 的 SKILL.md，采用截图比例核对与计算样式实测方法。本任务为既有桌面网页的局部样式优化，保留现有自适应布局，不生成固定 750px 截图网页，也不提取 Mike 品牌或位图素材。
+- Use the floating sidebar, whitespace and soft shadows in the current Mike screenshot as references, adding layered low-contrast shadows to the sidebar and input. Inset the sidebar surface with 22px corners while retaining the 248px navigation allocation.
+- Apply 28px backdrop blur, 155% saturation, a translucent light-blue gradient, a white highlight edge and outer shadows specifically to the settings panel. It is 340px wide with a viewport-constrained maximum; forms remain readable. Fall back to solid colour where blur is unsupported or reduced transparency is requested.
+- Identify the conflict between the follow-up button's 36px width and Streamlit's default 40px minimum height. Constrain initial/follow-up send buttons to 40px width, height and minimum/maximum dimensions, remove padding and centre the arrow.
+- Read the user-specified image-to-code SKILL.md and use screenshot-proportion checks and measured computed styles. This is a local style refinement of an existing desktop website; retain its responsive layout rather than generating a fixed 750px screenshot page or extracting Mike branding/bitmap assets.
 
-浏览器验收：正式 8505 设置开合、中英切换、五个模型选项；弹层计算样式确认背景模糊及分层阴影生效。独立虚构 QA 页验证追问按钮 40×40px，输入框高 76px，与回答同为 left=336px、width=885px（1280px 视口）。截图为 output/liquid-glass-settings-verified.png 和 output/round-followup-verified.png，后者仅为界面夹具，不是模型运行证明。没有重启正式服务，没有进行本轮真实模型调用或真实手机验收。
+Browser acceptance: open/close settings, switch Chinese/English and inspect five model choices on the production 8505 app; computed styles confirm backdrop blur and layered shadows. An independent fictional QA page verifies a 40×40px follow-up button and 76px-high input, aligned with the answer at left=336px and width=885px (1280px viewport). Screenshots: output/liquid-glass-settings-verified.png and output/round-followup-verified.png; the latter is an interface fixture, not evidence of a model run. The production service was not restarted, and no real-model calls or physical-phone checks were performed in this round.
 
-用户明确要求保留之前的聊天形式：居中的云朵与“你好，今天想审查什么？”，下方全宽圆角白色输入框、左下带下拉提示的附件按钮、右下蓝色圆形发送按钮，操作说明在框下方。已撤销首页标题／输入左右分栏、方角输入区与描边方形发送按钮。续问框采用同一套圆角和按钮样式。
+The user explicitly requires the previous chat form: a centred cloud and “Hello, what would you like to review today?”, followed by a full-width rounded white input, an attachment button with a dropdown cue at bottom left, a blue circular send button at bottom right, and instructions below. Revert the side-by-side heading/input home layout, square input area and outlined square send button. Use the same rounded styling and buttons for follow-up.
 
-侧栏底部集中设置、已删除的产品说明栏以及表格回答保留。Studio / Atelier 仅影响侧栏与结果排版，不能覆盖本截图指定的聊天区。中英文、上传和后台审查逻辑均未改动。31 项回归测试通过；静态样式检查无 FAIL / REFLEX / WARN。本轮未调用真实模型。
+Retain settings at the sidebar bottom, the removal of the product-information section, and tabular answers. Studio / Atelier influence only the sidebar and result typography and cannot override the screenshot-defined chat area. Chinese/English support, uploading and backend review logic are unchanged. 31 regression tests passed; static style checks reported no FAIL / REFLEX / WARN. No real model was called in this round.
 
 ---
 
-# Studio / Atelier 参考适配
+# Studio / Atelier Reference Adaptation
 
-已实际查看两页及用户给出的 Atelier 缩略图：
+Actually viewed both pages and the user-supplied Atelier thumbnail:
 - https://www.usehallmark.com/themes/studio/
 - https://www.usehallmark.com/themes/atelier/
 - https://www.usehallmark.com/assets/themes/atelier.webp
 
 | Before | After | Why |
 |---|---|---|
-| 标题与输入区居中纵向排列 | 宽屏左标题、右输入，窄屏上下排列 | 借鉴 Atelier 的文字／主体非对称构图 |
-| 圆角聊天卡片 | 小圆角纸页式输入区、上下细线 | 借鉴 Studio 的结构线和清楚对齐 |
-| 单行衬线问候 | 分为完整语义的两行轻衬线标题 | 建立类似参考页的字号层级 |
-| 实心圆形发送 | 小型描边发送按钮，悬停提供实色反馈 | 对应参考页的克制控件形式 |
+| Centred vertical heading and input | Heading left/input right on wide screens; stacked on narrow screens | Draw on Atelier's asymmetric text/subject composition |
+| Rounded chat card | Paper-like input with small corners and fine top/bottom lines | Draw on Studio's structural lines and clear alignment |
+| Single-line serif greeting | Two complete semantic lines in a light serif heading | Establish a type hierarchy similar to the references |
+| Solid circular send button | Small outlined send button with solid hover feedback | Reflect the references' restrained controls |
 
-保留用户的浅天蓝色、云朵品牌及 Mike 聊天结构，不移植 Studio 的橙色或 Atelier 的香水／暖色摄影。不复制作品数字、照片、字体度量线或品牌信息，不为应用添加营销段落。字体使用已有系统字体回退，未声称使用参考站的 Hedvig 或 Sentient 字体文件。
+Retain the user's light sky blue, cloud branding and Mike chat structure; do not import Studio orange or Atelier perfume/warm photography. Do not copy project numbers, photos, font measurement lines or branding, or add marketing paragraphs to the application. Use existing system-font fallbacks without claiming use of the reference sites' Hedvig or Sentient font files.
 
-只改变首页容器、CSS 视觉，后端与控件键保留。31 项测试通过，静态样式检查 0 fail / 0 reflex / 0 warn。实际浏览器检查 1280px 宽屏左右分栏与约 821px 窄屏上下布局，两者输入区均在首屏。未重新调用真实模型。
+Only the home container and CSS visuals change; backend and widget keys remain. 31 tests passed; static style checks reported 0 fail / 0 reflex / 0 warn. Actual browser checks covered side-by-side layout at 1280px and vertical layout at approximately 821px, with input visible in the first viewport in both. No real model was called again.
 
 ---
 
-# 2026-10-29 界面美化补充
+# 2026-10-29 Interface Refinement Supplement
 
-在 Mike 聊天结构上应用 Emil Design Engineering 与 Hallmark 的应用界面规范。改动 app.py 的界面标记／设置容器、assets/workspace.css 的视觉规则及 i18n.py 的标签映射；审查、文件解析、引用核验和导出逻辑未变。
+Apply Emil Design Engineering and Hallmark application-interface guidance to the Mike chat structure. Changes concern interface markup/settings containers in app.py, visual rules in assets/workspace.css and label mappings in i18n.py; review, parsing, citation checks and export logic are unchanged.
 
-用户明确要求移除“运行记录与产品说明”：该栏已删除，调用账本仍在内部会话中。回答内的实际分析进度保留。设置集中至侧栏底部单一入口，不再在侧栏堆叠四组表单。保留全部设置字段及其状态键。
+The user explicitly requested removal of “Execution records and product information”: the section is removed while the call ledger remains in internal session state. Actual analysis progress remains within answers. Consolidate settings into one entry at the sidebar bottom rather than stacking four forms; retain all setting fields and state keys.
 
 | Before | After | Why |
 |---|---|---|
-| 侧栏占用大量纵向空间 | 紧凑品牌区和底部设置 | 让聊天成为主任务 |
-| 粗重欢迎标题 | 系统宋体／衬线展示字与清晰正文 | 接近 Mike 截图的阅读质感 |
-| 带边框的附件与设置按钮 | 无边框的工具按钮 | 明确主次操作 |
-| 分散的间距与交互规则 | 统一令牌、即时焦点、细微按压反馈 | 保持一致且可操作 |
+| Sidebar consumes substantial vertical space | Compact branding and bottom settings | Make conversation the primary task |
+| Heavy welcome heading | System Song/serif display type with clear body text | Approach the reading quality of the Mike screenshot |
+| Bordered attachment/settings buttons | Borderless tool buttons | Clarify primary and secondary actions |
+| Scattered spacing and interaction rules | Unified tokens, immediate focus and subtle press feedback | Keep interaction consistent and usable |
 
-文案调整：欢迎标题由“你好，今天想审查什么？”改为“一起理清这份合同。”，原操作说明移至标题下方；“＋ 新对话”使用原生加号图标和“新对话”标签。未增添静态案例或无关功能。
+Copy changes: replace “Hello, what would you like to review today?” with “Let's make sense of this contract.” and move the previous instructions below the heading; “+ New conversation” uses a native plus icon and “New conversation” label. No static cases or unrelated features were added.
 
-验收：31 项现有测试通过，未修改测试来适配视觉结果；静态样式检查 0 fail / 0 reflex / 0 warn；实际浏览器检查设置入口、附件入口和语言切换。浏览器渲染通过 CUA 人工检查，未声称 sloplint 自动渲染层通过，也未进行本轮真实模型调用。
-
----
-
-# 2026-10-29：以用户提供的 Mike 截图为准
-
-本轮覆盖下文旧版布局描述。P1/P2/P4 是主要依据：左侧浮动导航，右侧宽聊天区；首页中央输入框、左下“＋”附件、右下圆形发送；对话开始后，用户问题在上、可折叠的实际执行记录、简短回答、两列问题表格、底部续问框。
-
-P3 的长确认表单已删除。未提供的事实不会被当成肯定回答：保持未确认，进入分析的条件与局限；司法区域选择是研究范围，不表示合同必然适用该法律。审查立场可由问题或偏好明确指定。修改合同的采纳操作保留为单独功能，不阻挡阅读分析。
-
-不增加截图中的 IDE、项目库、工作流等无关模块。保留浅天蓝及云朵；原文和来源收进回答下方的展开区域。截图的内部 Thought process 不照搬，改为实际执行步骤及可核对的来源数量。没有虚构链式推理。
-
-工程验收：31 项自动化测试通过；流程使用明确的测试替身检验六步审查、缺失事实继续分析、表格、追问、修改及导出。真实浏览器验证上传与中英切换；独立 output/table_layout_check.py 用测试夹具检查表格视觉，明确标为界面检查，不是实际模型回答，不打包为产品功能。
+Acceptance: 31 existing tests passed without changing tests to fit visual results; static style checks reported 0 fail / 0 reflex / 0 warn; actual browser checks covered settings, attachment entry and language switching. Browser rendering was inspected manually through CUA; no claim is made that sloplint's automated rendering layer passed, and no real model was called in this round.
 
 ---
 
-# 工作台设计调整
+# 2026-10-29: Follow the User-supplied Mike Screenshots
 
-用户指定 Mike 为主要布局参考，Emil Design Engineering 与 Hallmark 为辅助设计规范。浅天蓝及云朵是用户明确保留的品牌要求。
+This round overrides the earlier layout descriptions below. P1/P2/P4 are the primary references: floating left navigation and a wide chat area on the right; a central initial input with “+” attachment at bottom left and circular send at bottom right; after conversation starts, the user question appears above collapsible actual execution records, a brief answer, a two-column issue table and a bottom follow-up composer.
 
-## 参考依据（阅读实际源文件，未访问登录后的线上工作区）
+Remove P3's long confirmation form. Missing facts are not treated as affirmative answers: leave them unconfirmed as analysis conditions and limitations; jurisdiction selection defines research scope rather than establishing that law's applicability. Perspective can be specified in the question or preferences. Acceptance of contract amendments remains a separate function and does not block reading the analysis.
 
-- https://github.com/open-legal-products/mike ：frontend/src/app/(pages)/layout.tsx；assistant/chat/[id]/page.tsx；components/assistant/ChatView.tsx、ChatInput.tsx、AssistantChatPane.tsx、AssistantSidePanel.tsx；components/AppSidebar.tsx。
-- https://github.com/emilkowalski/skills ：skills/emil-design-eng/SKILL.md。
-- https://github.com/Nutlope/hallmark ：skills/hallmark/SKILL.md，redesign、direction 和 flow 文档。
+Do not add unrelated screenshot modules such as IDE, project library or workflows. Retain light sky blue and clouds; place originals and sources in expandable areas beneath answers. Do not copy the screenshots' internal Thought process; replace it with actual execution steps and verifiable source counts. No fabricated chain-of-thought is shown.
 
-| 原实现 | 调整 | 原因 |
+Engineering acceptance: 31 automated tests passed; explicitly labelled test doubles exercise six-step review, continued analysis despite missing facts, tables, follow-up, amendments and exports. Real-browser checks verified upload and Chinese/English switching; independent output/table_layout_check.py uses fixtures to inspect table visuals, explicitly labelled as an interface check rather than a real model answer and not packaged as a product feature.
+
+---
+
+# Workbench Design Adjustments
+
+The user selected Mike as the primary layout reference, with Emil Design Engineering and Hallmark as supporting design guidance. Light sky blue and clouds are branding requirements explicitly retained by the user.
+
+## Reference Basis (Actual Source Files Read; Authenticated Online Workspace Not Visited)
+
+- https://github.com/open-legal-products/mike : frontend/src/app/(pages)/layout.tsx; assistant/chat/[id]/page.tsx; components/assistant/ChatView.tsx, ChatInput.tsx, AssistantChatPane.tsx, AssistantSidePanel.tsx; components/AppSidebar.tsx.
+- https://github.com/emilkowalski/skills : skills/emil-design-eng/SKILL.md.
+- https://github.com/Nutlope/hallmark : skills/hallmark/SKILL.md, redesign, direction and flow documents.
+
+| Original Implementation | Adjustment | Reason |
 |---|---|---|
-| 营销横幅和两栏表单 | 简洁工作区标题、中央输入 | 对应 Mike 对话为主的应用结构 |
-| 首屏四步说明、静态案例按钮 | 实际问题输入与附件 | 用户要求真实工作流，案例移至仓库 |
-| 原文左侧、分析右侧 | 对话居中，文档与引用按需右侧显示 | 对应 ChatView 与 AssistantSidePanel |
-| 中文模式仍有双语标题 | 单语言标签及本地化上传组件 | UI 语言与回答语言分离 |
-| 持续浮动云朵 | 短暂入场、可减少动效 | 避免干扰高频阅读 |
+| Marketing banner and two-column form | Simple workspace heading and central input | Match Mike's conversation-first application structure |
+| Four-step initial instructions and static case buttons | Actual question input and attachments | User requires a real workflow; cases move to the repository |
+| Original on left, analysis on right | Centred conversation with documents/citations shown on demand at right | Match ChatView and AssistantSidePanel |
+| Bilingual headings remain in Chinese mode | Single-language labels and localised upload component | Separate UI language from answer language |
+| Continuously floating clouds | Brief entrance and reducible motion | Avoid distracting from repeated reading |
 
-不增加 Mike 的项目管理、邮件、日历等无关功能。修改清单和导出仍由原有后端提供，通过左侧导航访问。原文不会因为选定段落而重排。仅参考布局，未复制 Mike 源码。
+Do not add unrelated Mike features such as project management, email or calendars. Existing backend amendment-list and export functions remain accessible through left navigation. Selecting a paragraph does not reflow the original. Reference the layout only; Mike source code was not copied.
 
-## 自审
+## Self-review
 
-保留了来源核验、关键事实确认、采纳重叠检查和真实 Word 修订。自审发现语言切换后表单默认值重置，已修复并添加回归；文件上传使用会话代次标识，清除／新建不会沿用旧组件附件。界面参考以适配现有 Streamlit 能力为限，不承诺像素级复刻。静态样式检查通过；浏览器实际检查上传与中英文切换。尚未执行手机尺寸完整验收或带真实模型结果的视觉验收。
-
-
-用户追加：标题使用轻衬线字体；标题与输入框之间放置三个胶囊快捷选项。快捷选项仅准备可编辑问题，用户自行发送；判例检索选项围绕上传合同及所选司法区域，保持现有合同审查范围。
+Retain source verification, key-fact confirmation, overlapping-amendment checks and genuine Word revisions. Self-review found form defaults resetting after language switching; this was fixed with a regression test. Uploads use a session-generation identifier so clear/new actions do not reuse old component attachments. Reference adaptation is limited by existing Streamlit capabilities, without promising pixel-perfect reproduction. Static style checks passed; actual browser checks covered uploads and Chinese/English switching. Full mobile-size acceptance and visual acceptance with real-model results have not yet been performed.
 
 
-# 产品首页（用户新增授权）
-首页采用 Mike 的大幅主视觉、明确进入入口与简要功能介绍，折射水光参考 Refract，保留浅蓝与云朵品牌。新介绍页与工作台分开；既有“不添加营销段落”仅针对原工作台，不限制本次明确要求的介绍首页。功能表述按已实现合同工作流；不新增假样例、客户数字或模拟法律回答。
+User addition: use a light serif heading and place three pill-shaped quick options between heading and input. Options only prepare editable questions for the user to send; the case-research option concerns the uploaded contract and selected jurisdiction, preserving the existing contract-review scope.
+
+
+# Product Home Page (New User Authorisation)
+Use Mike's large hero, clear entry point and brief feature introduction, with refracted water light inspired by Refract and retained light-blue/cloud branding. Separate the introduction page from the workbench; the earlier “no marketing paragraphs” restriction applied to the original workbench, not this expressly requested home page. Describe the implemented contract workflow without fake examples, customer counts or simulated legal answers.
 
 | Before | After | Why |
 |---|---|---|
-| 直接进入上传工作台 | 功能介绍首页，点击开始使用进入工作台 | 先解释用途，再让用户操作 |
-| 页面没有主视觉 | 原创 WebGL 折射光与轻衬线标题 | 对应用户指定的 Refract 参考 |
-| 导航离开会隐藏控件 | 返回首页时保留会话控件值 | 不丢失草稿和审查设置 |
+| Open directly into upload workbench | Feature introduction page, then Get started opens workbench | Explain purpose before interaction |
+| No hero visual | Original WebGL refracted light and light serif heading | Respond to the user's Refract reference |
+| Navigation away hides controls | Preserve session widget values when returning home | Keep drafts and review settings |
 
-动效支持暂停、系统减少动效与不可见时停帧；WebGL 失败回退纯色。工作台保留原聊天形式，采用低对比光纹。手机媒体查询已实现，真实手机未验收。
-
-
-追问输入框按用户第二张 Mike 截图改为紧凑形态：首次上传保持宽大输入框；已有回答后使用更窄、约140px高的固定底部输入框，不再显示重复的“继续提问”标题，保留可访问标签及占位提示。追问可按内容输出直接文字解释，无相关风险时不重复首次风险表。
+Animations support pause, system reduced motion and frame suspension when invisible; WebGL failure falls back to solid colour. The workbench retains its original chat form with low-contrast light patterns. Mobile media queries are implemented; physical-phone acceptance has not been completed.
 
 
-用户最新要求覆盖此前“收窄”理解：会话底部输入框应当和回答中的横线等宽，进一步压扁。采用同一行布局与回答内容列锚定，实测等宽885px、同左边缘336px、高76px。首屏初始上传框保持不变。
+Adapt the follow-up composer to the compact form in the user's second Mike screenshot: retain the large initial upload composer, then use a narrower fixed-bottom input approximately 140px high once an answer exists. Remove the repeated “Continue asking” heading while retaining an accessible label and placeholder. Follow-ups can provide direct prose explanations without repeating the initial risk table when no relevant risks exist.
 
 
-本轮保持已确认布局，只在首次审查结果加入“完整检查清单”折叠区和记录/不足项计数。无需逐项确认，没有新增静态案例入口。清单四列为主题、状态、判断与原文、后续处理。原文不随UI语言被自动翻译，界面标签中英分别展示；检查内容跟随报告语言。
+The user's latest requirement supersedes the earlier interpretation of “narrower”: the bottom composer must match the width of the answer's horizontal rules and be flatter. Use a single-row layout anchored to the answer content column; measured width is 885px, left edge 336px and height 76px. Leave the initial upload composer unchanged.
+
+
+Retain the confirmed layout in this round, adding only a “Full review checklist” expander and recorded/insufficient-item counts to initial review results. No item-by-item confirmation or static-case entry is added. The checklist has four columns: topic, status, judgment/original text and next action. UI language does not automatically translate originals; interface labels are displayed separately in Chinese or English, while check content follows report language.
