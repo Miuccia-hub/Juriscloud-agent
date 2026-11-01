@@ -7,3 +7,11 @@ The document contains identity, contact, vehicle and bank-account fields. It is 
 SHA-256: `1c7684761553cfd2267b25074b4d586b316ce241d26cff814b99fd92b6d70c63`
 
 Use this same input for TC01, then continue TC02 and TC03 without replacing it. See `../prompts.json`. The unchanged historical Word report says the input was excluded from its original evidence package; this accompanying input was added afterwards.
+
+## Current test input: English agreement
+
+The current input selected by the user is [Used Vehicle Sale and Purchase Agreement English.docx](Used%20Vehicle%20Sale%20and%20Purchase%20Agreement%20English.docx). This user-supplied English version is included unchanged. It contains the same fictional identity/contact/vehicle/account entries previously confirmed by the user. No claim is made that it is a legally equivalent or certified translation.
+
+SHA-256: `129d0090fca4ab78237d20b7a76146fbd973ac67316d299ca3e623c23ed609c4`
+
+For a new test run, upload this English file for TC01 and use the existing three prompts sequentially. **The existing screenshots, selected responses and Word report were generated with the Chinese input, not this English file. No live rerun with this English document has yet been completed.** The Chinese file is retained only as the historical input supporting that evidence.

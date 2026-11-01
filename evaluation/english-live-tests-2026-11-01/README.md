@@ -166,3 +166,7 @@ Contract context and conditional legal analysis
 ## Supporting records
 
 The package includes observed UI records, selected response text and screenshots. Long accessibility text nodes may be truncated; the records are not presented as complete verbatim answers. Credentials are not included. The user supplied the original filled contract after preparation of the historical Word report; it is now included unchanged in [inputs/](inputs/README.md), with a provenance and handling note. Timing entries record submission and first observation of completion; they are not precise server latency measurements.
+
+## Updated input for future tests
+
+The user has replaced the current test input with [Used Vehicle Sale and Purchase Agreement English.docx](inputs/Used%20Vehicle%20Sale%20and%20Purchase%20Agreement%20English.docx). A live rerun with that file is pending. All observed results and screenshots above remain evidence of the original Chinese-input run. The Chinese input is retained for historical reproducibility; see [input provenance](inputs/README.md).
