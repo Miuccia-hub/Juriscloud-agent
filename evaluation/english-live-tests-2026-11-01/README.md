@@ -165,4 +165,4 @@ Contract context and conditional legal analysis
 
 ## Supporting records
 
-The package includes observed UI records, selected response text and screenshots. Long accessibility text nodes may be truncated; the records are not presented as complete verbatim answers. The original contract and credentials are not included. Timing entries record submission and first observation of completion; they are not precise server latency measurements.
+The package includes observed UI records, selected response text and screenshots. Long accessibility text nodes may be truncated; the records are not presented as complete verbatim answers. Credentials are not included. The user supplied the original filled contract after preparation of the historical Word report; it is now included unchanged in [inputs/](inputs/README.md), with a provenance and handling note. Timing entries record submission and first observation of completion; they are not precise server latency measurements.

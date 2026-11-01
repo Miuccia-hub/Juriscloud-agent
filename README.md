@@ -47,7 +47,7 @@ The [English live-test report](evaluation/english-live-tests-2026-11-01/README.m
 
 Download the [English Word report with screenshots](evaluation/english-live-tests-2026-11-01/Juriscloud%20Live%20English%20Functional%20Tests.docx). [Prompts](evaluation/english-live-tests-2026-11-01/prompts.json), [selected answer text](evaluation/english-live-tests-2026-11-01/actual-responses.md), observations and nine original screenshots are included. Selected text records are not complete verbatim transcripts.
 
-**Input artifact outstanding:** the exact filled used-car contract used in these screenshots must still be supplied. The locally available same-named file is a different employment agreement, so it has deliberately not been substituted. The synthetic [examples](examples/) are runnable supplementary fixtures, not the inputs for those live screenshots.
+**Original test input:** [test contract.docx](evaluation/english-live-tests-2026-11-01/inputs/test%20contract.docx), supplied unchanged by the user after the evidence report was prepared. Its key terms match the recorded outputs; no original-run file hash was retained. See the [input provenance and handling note](evaluation/english-live-tests-2026-11-01/inputs/README.md). Synthetic [examples](examples/) are supplementary fixtures, not substitutes for the live-test input.
 
 Functional execution is not a legal-accuracy certification. TC01 recorded quotation matches of 0/0; TC02 recorded 5/6; TC03 could not reverify an earlier case from its current evidence set. Some Activity labels remained Chinese under English UI. Full judgments, subsequent treatment and current law were not independently verified. The live evidence predates the final case-link presentation update; fixture tests cover that update.
 
