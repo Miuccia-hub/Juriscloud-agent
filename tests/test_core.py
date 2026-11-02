@@ -209,6 +209,19 @@ def test_language_switch_preserves_draft_and_missing_key_blocks():
     assert app.text_input(key="api_key").value==""
 
 
+def test_upload_panel_does_not_block_quick_prompt_or_composer():
+    from tests.ui_helpers import workspace_app
+    app=workspace_app(Path(__file__).resolve().parents[1]/"app.py").run()
+    assert app.session_state["upload_open"] is False
+    app.button(key="toggle_upload").click().run()
+    assert app.session_state["upload_open"] is True
+    app.button(key="quick_prompt_1").click().run()
+    assert "判例" in app.text_area(key="initial_question").value
+    app.button(key="toggle_upload").click().run()
+    assert app.session_state["upload_open"] is False
+    assert "判例" in app.text_area(key="initial_question").value
+
+
 def test_upload_decode_and_language_resolution():
     import base64
     from legal_agent.upload import decode_files
