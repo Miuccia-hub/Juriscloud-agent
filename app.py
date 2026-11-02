@@ -253,7 +253,9 @@ if "main" not in ss:
         with space:
             names=[f.name for f in uploaded]+[f.name for f in files]
             if text.strip(): names.insert(0,tx("已添加合同文本"))
-            for name in names: st.markdown('<span class="attachment">▤ '+html.escape(name)+'</span>',unsafe_allow_html=True)
+            if names:
+                chips=''.join('<span class="attachment">▤ '+html.escape(name)+'</span>' for name in names)
+                st.markdown('<div class="composer-attachments">'+chips+'</div>',unsafe_allow_html=True)
         with send: submitted=st.button("↑",help=tx("发送并分析"),type="primary",key="send_initial")
     st.caption("上传合同后直接提问，分析完成后可以继续追问。")
     if submitted:
