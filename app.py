@@ -31,9 +31,6 @@ def go_home():
 def use_quick_prompt(prompt):
     ss.initial_question=tx(prompt)
 
-def toggle_upload_panel():
-    ss.upload_open=not ss.get("upload_open",False)
-
 def clear():
     preferences={k:ss[k] for k in ("ui_language","page") if k in ss}
     for key in list(ss): del ss[key]
@@ -242,21 +239,17 @@ if "main" not in ss:
         for i,(label,prompt) in enumerate(quick_options):
             with quick_columns[i]:
                 st.button(label,key=f"quick_prompt_{i}",use_container_width=True,on_click=use_quick_prompt,args=(prompt,))
-    ss.setdefault("upload_open",False)
-    panel_display="block" if ss.upload_open else "none"
-    st.markdown(f'<style>.st-key-upload_panel{{display:{panel_display}!important}}</style>',unsafe_allow_html=True)
-    with st.container(border=True,key="upload_panel"):
-        input_mode=st.radio("合同来源 / Contract input",["上传文件","粘贴文本"],horizontal=True,key="input_mode")
-        uploaded=upload_files("main_upload",tx("主合同 / Main contract"),ss.get("ui_language","English"),1) if input_mode=="上传文件" else []
-        text=st.text_area("合同正文 / Contract text",height=170,key="contract_text") if input_mode=="粘贴文本" else ""
-        files=upload_files("support_upload",tx("补充资料"),ss.get("ui_language","English"),6)
-        roles={i:st.selectbox(f"{f.name} 的用途",["交易背景材料","法律研究材料","合同附件"],key=f"role_{i}_{f.name}") for i,f in enumerate(files)}
-        st.caption("支持文字版 PDF、Word 和文本文件；每份最多 8 MB。")
     with st.container(border=True,key="initial_composer"):
         initial_question=st.text_area("你的问题",placeholder=tx("有什么可以帮你？"),key="initial_question",height=95,label_visibility="collapsed")
         attach,space,send=st.columns([1,7,1],vertical_alignment="bottom")
         with attach:
-            st.button("＋",help=tx("添加合同与资料"),key="toggle_upload",on_click=toggle_upload_panel)
+            with st.popover("＋",help=tx("添加合同与资料")):
+                input_mode=st.radio("合同来源 / Contract input",["上传文件","粘贴文本"],horizontal=True,key="input_mode")
+                uploaded=upload_files("main_upload",tx("主合同 / Main contract"),ss.get("ui_language","English"),1) if input_mode=="上传文件" else []
+                text=st.text_area("合同正文 / Contract text",height=170,key="contract_text") if input_mode=="粘贴文本" else ""
+                files=upload_files("support_upload",tx("补充资料"),ss.get("ui_language","English"),6)
+                roles={i:st.selectbox(f"{f.name} 的用途",["交易背景材料","法律研究材料","合同附件"],key=f"role_{i}_{f.name}") for i,f in enumerate(files)}
+                st.caption("支持文字版 PDF、Word 和文本文件；每份最多 8 MB。")
         with space:
             names=[f.name for f in uploaded]+[f.name for f in files]
             if text.strip(): names.insert(0,tx("已添加合同文本"))
