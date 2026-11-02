@@ -32,5 +32,8 @@ def upload_files(key,label,language,limit):
     epoch=st.session_state.setdefault("_upload_epoch",uuid4().hex)
     result=_component(label=label,english=language=="English",limit=limit,initial=saved,
                       default=saved,key=key+epoch)
-    st.session_state[saved_key]=result
-    return decode_files(result,limit)
+    # A component can briefly return None while its iframe reconnects during a
+    # rerun. Keep the last acknowledged selection instead of dropping the chip.
+    if result is not None:
+        st.session_state[saved_key]=result
+    return decode_files(st.session_state.get(saved_key),limit)
