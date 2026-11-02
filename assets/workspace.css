@@ -231,7 +231,7 @@ body:has(.st-key-followup_composer) .block-container{padding-bottom:120px}
 .st-key-initial_composer [data-testid="stHorizontalBlock"]>[data-testid="stColumn"]:nth-child(2){
  flex:1 1 0!important;min-width:0!important;text-align:left;
 }
-.st-key-initial_composer .composer-attachments{display:flex;justify-content:flex-start;align-items:center;flex-wrap:wrap;gap:6px;min-width:0}
+.st-key-initial_composer .composer-attachments{display:flex;justify-content:flex-start;align-items:center;flex-wrap:wrap;gap:6px;min-width:0;transform:translateY(-18px)}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
  [data-testid="stPopoverBody"]:has(.st-key-ui_language){background:#f0f7fd}
 }
