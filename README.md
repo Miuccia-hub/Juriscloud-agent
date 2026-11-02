@@ -31,7 +31,7 @@ streamlit run app.py
 
 Open **Get started → Settings → Model & connection**, enter your own model API key and test the connection. The analysis model needs Responses structured output; the search model also needs `web_search`. The two model dropdowns contain `gpt-6-luna` and `gpt-6.1-sol`, as requested for this project. Your endpoint and account must actually provide these models. A successful models-list request is not a full analysis test. A compatible alternative endpoint can be configured by the deployment administrator through `OPENAI_BASE_URL`; never commit credentials.
 
-Choose interface language, answer language, jurisdiction and your perspective in Settings. Changing interface language does not translate the original contract. Attach the contract with **+**, enter a question and send. After a report, use the compact input at the bottom to continue the conversation.
+New sessions default to mainland China with PKULAW research enabled; users can change the jurisdiction or disable PKULAW in Settings. Choose interface language, answer language, jurisdiction and your perspective in Settings. Changing interface language does not translate the original contract. Attach the contract with **+**, enter a question and send. After a report, use the compact input at the bottom to continue the conversation.
 
 Without a model key, the app allows input preparation but does not generate simulated answers. Contracts and keys remain in the current app session; there is no account or cloud conversation-history database. Contracts and necessary research excerpts are sent to the model provider. Only authorised materials should be uploaded.
 

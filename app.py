@@ -21,6 +21,8 @@ from legal_agent.credentials import backend_pkulaw_token, save_backend_pkulaw_to
 _st.set_page_config(page_title="Juriscloud",page_icon="☁️",layout="wide",initial_sidebar_state="expanded")
 ss=_st.session_state
 ss.setdefault("ui_language","English")
+ss.setdefault("jurisdiction","中国大陆")
+ss.setdefault("pkulaw_enabled",True)
 st=LocalizedUI(_st,lambda:ss.get("ui_language","English"))
 def tx(value): return translate(value,ss.get("ui_language","English"))
 def go_home():
