@@ -220,6 +220,13 @@ body:has(.st-key-followup_composer) .block-container{padding-bottom:120px}
 .st-key-send_initial button [data-testid="stMarkdownContainer"],
 .st-key-send_followup button [data-testid="stMarkdownContainer"]{display:flex;align-items:center;justify-content:center}
 .st-key-send_initial button p,.st-key-send_followup button p{margin:0;line-height:1}
+/* Give the first-message send button its own 40px slot at the right inside edge. */
+.st-key-initial_composer [data-testid="stHorizontalBlock"]>[data-testid="stColumn"]:last-child{
+ flex:0 0 40px!important;width:40px!important;min-width:40px!important;
+}
+.st-key-initial_composer [data-testid="stHorizontalBlock"]>[data-testid="stColumn"]:nth-child(2){
+ flex:1 1 0!important;min-width:0!important;
+}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
  [data-testid="stPopoverBody"]:has(.st-key-ui_language){background:#f0f7fd}
 }
