@@ -39,7 +39,7 @@ The [English evaluation record](evaluation/english-live-tests-2026-11-01/README.
 
 The tests used the [original Chinese contract](evaluation/english-live-tests-2026-11-01/inputs/test%20contract.docx). An [English version](evaluation/english-live-tests-2026-11-01/inputs/Used%20Vehicle%20Sale%20and%20Purchase%20Agreement%20English.docx) is supplied as a reading aid; it was not the input for these recorded runs. The [input provenance note](evaluation/english-live-tests-2026-11-01/inputs/README.md) describes the files. The [Word evaluation report](evaluation/english-live-tests-2026-11-01/Juriscloud%20Live%20English%20Functional%20Tests.docx), [prompts](evaluation/english-live-tests-2026-11-01/prompts.json), [selected answer text](evaluation/english-live-tests-2026-11-01/actual-responses.md) and original screenshots provide the supporting evidence. The selected answer text is not a complete verbatim transcript.
 
-These runs demonstrate functional execution, not legal accuracy. TC01 recorded quotation matches of 0/0; TC02 recorded 5/6; TC03 could not reverify an earlier case from its available evidence. Full judgments, subsequent treatment and current law were not independently verified. Some Activity labels remained Chinese under the English interface. The recorded runs preceded the final case-link display change, which is covered by fixture tests.
+These runs demonstrate functional execution, not legal accuracy. TC01 recorded quotation matches of 0/0; TC02 recorded 5/6; TC03 could not reverify an earlier case from its available evidence. Full judgments, subsequent treatment and current law were not independently verified. Some Activity labels remained Chinese under the English interface.
 
 ## Local setup and automated tests
 
@@ -85,5 +85,3 @@ The connection check authenticates the case and legislation services and lists t
 - `evaluation/english-live-tests-2026-11-01/`: live evaluation record, inputs and screenshots.
 - `PRD.md`, `DESIGN.md`, `THIRD_PARTY.md`: product and design documentation and external references.
 - `docs/DEPLOYMENT.md`, `docs/ASSIGNMENT_CHECKLIST.md`: deployment details and assessment status.
-
-The course-specified API Credentials module was unavailable at the supplied repository URL (HTTP 404), so the current application uses its own Settings credential input. The repository is private; instructor access requires a GitHub invitation from the owner.
