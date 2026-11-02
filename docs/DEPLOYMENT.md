@@ -2,7 +2,7 @@
 
 Live URL: https://juriscloud-agent.streamlit.app/
 
-Deployed on 2 November 2026 from `Miuccia-hub/Juriscloud-agent`, branch `main`, entry `app.py`, using Python 3.12. The application is public and the GitHub repository remains private. Anonymous access to the English homepage, Get started workbench and settings was verified. Cloud model execution, report generation, follow-up research and exports have not yet been verified with live credentials. No model key or PKULAW Token was transferred from the local environment during deployment. Localhost addresses in historical evidence remain local test URLs.
+Deployed on 2 November 2026 from `Miuccia-hub/Juriscloud-agent`, branch `main`, entry `app.py`, using Python 3.12. The application is public and the GitHub repository remains private. Anonymous access to the English homepage, Get started workbench and settings was verified. Chinese/English interface switching was also verified. The owner subsequently configured `PKULAW_TOKEN` through Cloud Secrets; case and legislation authentication/tool-list checks passed on 2 November 2026 without executing searches. Cloud model execution, report generation, actual follow-up research and exports have not yet been verified with live credentials. No credential value is included in this repository. Localhost addresses in historical evidence remain local test URLs.
 
 The earlier `juriscloud.streamlit.app` application was also made public with explicit owner authorisation to release the workspace's private-app slot.
 

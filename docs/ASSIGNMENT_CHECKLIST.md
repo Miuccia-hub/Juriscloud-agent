@@ -10,7 +10,7 @@ Checked against LAWS90286 — 2026 — A2 Student Copy. This is a status record,
 | User input and visible results | Upload/paste, question, report and continuing conversation |
 | Three test cases with actual output | Final English report plus nine live screenshots in evaluation/ |
 | Required test input artifacts | Original Chinese test contract included in evaluation/english-live-tests-2026-11-01/inputs/; English version attached for instructor reading convenience. Recorded results use the Chinese input |
-| Streamlit Cloud deployment URL | Deployed 2 November 2026: https://juriscloud-agent.streamlit.app/ . Anonymous homepage/workbench/settings verified; cloud model-analysis and PKULAW tests pending credentials |
+| Streamlit Cloud deployment URL | Deployed 2 November 2026: https://juriscloud-agent.streamlit.app/ . Anonymous homepage/workbench/settings verified. PKULAW case/legislation authentication and tool listing passed without searches; cloud model-analysis and actual research remain untested |
 | Specified API Credentials sidebar module | Course repository returns 404; custom credential UI does not resolve this requirement |
 | Teacher repository access | Repository private; teacher GitHub username needed |
 | Freeze after formal submission | Owner must stop changes after submitting |
