@@ -18,6 +18,8 @@ The Activity panel displays the execution stages and source checks. Case researc
 
 The workbench also supports answer copying, a consolidated amendment list, Word/PDF report export and tracked changes for supported Word documents. Suggested amendments are selected before insertion into a revised contract.
 
+Small interactive details—including magnetic buttons and cursor-responsive spotlight cards—are built into the interface for visitors to discover.
+
 ## Using the application
 
 1. Open the [live application](https://juriscloud-agent.streamlit.app/) and select **Get started**.
