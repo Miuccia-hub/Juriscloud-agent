@@ -1,6 +1,10 @@
 # Streamlit Community Cloud deployment
 
-No cloud deployment has yet been verified. Localhost addresses in historical evidence are local test URLs only.
+Live URL: https://juriscloud-agent.streamlit.app/
+
+Deployed on 2 November 2026 from `Miuccia-hub/Juriscloud-agent`, branch `main`, entry `app.py`, using Python 3.12. The application is public and the GitHub repository remains private. Anonymous access to the English homepage, Get started workbench and settings was verified. Cloud model execution, report generation, follow-up research and exports have not yet been verified with live credentials. No model key or PKULAW Token was transferred from the local environment during deployment. Localhost addresses in historical evidence remain local test URLs.
+
+The earlier `juriscloud.streamlit.app` application was also made public with explicit owner authorisation to release the workspace's private-app slot.
 
 1. Sign in to Streamlit Community Cloud with the GitHub account authorised to access `Miuccia-hub/Juriscloud-agent`.
 2. Create an app using this repository, branch `main`, entry point `app.py`. Choose Python 3.12 in advanced settings. Dependencies are in root `requirements.txt`.

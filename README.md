@@ -2,7 +2,7 @@
 
 A Streamlit agent for reviewing commercial contracts and researching related cases in a continuing conversation. Choose **Victoria, Australia** or **mainland China** independently. The interface defaults to English and can be switched to Chinese; answer language and review perspective are separate settings.
 
-**Deployment URL: pending — this repository is not yet a deployed app.** See [deployment instructions](docs/DEPLOYMENT.md) and the [assignment checklist](docs/ASSIGNMENT_CHECKLIST.md) before submission.
+**Live application: [https://juriscloud-agent.streamlit.app/](https://juriscloud-agent.streamlit.app/)** See [deployment instructions](docs/DEPLOYMENT.md) and the [assignment checklist](docs/ASSIGNMENT_CHECKLIST.md) before submission.
 
 ## What the agent does
 
@@ -89,4 +89,4 @@ The connection check initialises the two services and lists tools without perfor
 
 The specified API Credentials module at `https://github.com/stoneman-mls/openai_credentials` returned 404 during preparation. The current custom Settings/sidebar credential input is temporary and is **not claimed to satisfy the specified-module requirement**. Obtain the correct module or instructor confirmation before submission.
 
-The repository remains private. Teacher access has not been granted because the teacher's GitHub username is unavailable. A real Streamlit Cloud URL must be added after successful deployment. Do not alter the submitted repository after the formal submission date unless permitted by the instructor.
+The repository remains private. Teacher access has not been granted because the teacher's GitHub username is unavailable. The public Streamlit Cloud app was deployed on 2 November 2026. Anonymous homepage/workbench access and settings were checked; live cloud model analysis and PKULAW research have not yet been tested with credentials. Do not alter the submitted repository after the formal submission date unless permitted by the instructor.
