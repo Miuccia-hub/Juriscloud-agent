@@ -1,26 +1,49 @@
 # ☁️ Juriscloud
 
-A Streamlit agent for reviewing commercial contracts and researching related cases in a continuing conversation. Choose **Victoria, Australia** or **mainland China** independently. The interface defaults to English and can be switched to Chinese; answer language and review perspective are separate settings.
+Juriscloud is a Streamlit AI agent for commercial contract review and clause-based legal research. It accepts a contract and a question, produces a structured review, and supports follow-up questions within the same conversation. The two supported jurisdictions are mainland China and Victoria, Australia.
 
-**Live application: [https://juriscloud-agent.streamlit.app/](https://juriscloud-agent.streamlit.app/)** See [deployment instructions](docs/DEPLOYMENT.md) and the [assignment checklist](docs/ASSIGNMENT_CHECKLIST.md) before submission.
+**Live application:** [juriscloud-agent.streamlit.app](https://juriscloud-agent.streamlit.app/)
 
-## What the agent does
+The interface defaults to English, with a Chinese option. New sessions default to mainland China and enable PKULAW research; both settings can be changed. Interface language, answer language and review perspective are configured independently.
 
-1. Accepts a DOCX, text-based PDF or pasted contract, supporting materials and a question.
-2. Identifies the contract and builds a general plus contract-specific coverage checklist.
-3. Reviews checklist topics, researches legal sources and checks quotations against retrieved text.
-4. Independently challenges the draft and checks omissions before producing a risk table and coverage record.
-5. Answers follow-ups about a clause, related cases or an earlier answer using the contract and conversation context. A follow-up uses five structured AI calls: plan, evidence, draft answer, critique and final answer. Initial reviews also exceed five calls; the count varies with the checklist, with additional search requests.
+## Agent workflow
 
-Each successful analysis run therefore has at least five AI calls. Validation or provider failures can stop a run before completion. The visible Activity panel shows execution status and source checks, not private model reasoning.
+1. **Read the materials.** Accept a DOCX, text-based PDF or pasted contract, optional supporting documents and the user's question.
+2. **Plan the review.** Identify the contract type and prepare a general and contract-specific coverage checklist.
+3. **Analyse the contract.** Examine legal effect, drafting consistency, commercial risks, missing terms and facts requiring confirmation. Research relevant legal sources and compare quotations with retrieved text.
+4. **Check the draft.** Conduct a separate critique and omission check before presenting a risk table, recommendations and a coverage record.
+5. **Continue the conversation.** Answer questions about a clause, an identified risk or related cases using the contract and prior conversation. A follow-up comprises five structured AI calls: planning, evidence, draft answer, critique and final answer. The initial review also exceeds five calls, with the precise number determined by the checklist and research needs.
 
-For mainland-China case requests, optional PKULAW MCP research runs first. Incomplete evidence triggers public-source research. Victoria uses public sources. Case links are displayed when a source returns a valid URL; the agent must not invent a link. Research currently requires an uploaded or pasted contract; there is no independent case-search mode.
+The Activity panel displays the execution stages and source checks. Case research concerning mainland China uses PKULAW MCP first when enabled and falls back to public sources if the available evidence is insufficient. Victorian research uses public sources. A case link appears only when the retrieved source supplies a valid URL. Research currently requires an uploaded or pasted contract.
 
-The workbench supports multi-turn questions, copying answers, a unified amendment list, Word/PDF reports and supported Word tracked changes. Suggested amendments require user selection before insertion into a revised contract. The product does not contain static assignment demonstration answers.
+The workbench also supports answer copying, a consolidated amendment list, Word/PDF report export and tracked changes for supported Word documents. Suggested amendments are selected before insertion into a revised contract.
 
-## Run locally
+## Using the application
 
-Use Python 3.11 or 3.12 (development tests used 3.12).
+1. Open the [live application](https://juriscloud-agent.streamlit.app/) and select **Get started**.
+2. In **Settings**, select the jurisdiction, interface and answer languages, and review perspective. Under **Model & connection**, enter a model API key and run the connection check.
+3. Use **+** to attach the contract and any supporting materials, enter a question, and send it for review.
+4. Read the risk table and source information. Use the compact input below the answer for a follow-up question or related-case request, or export the report.
+
+The model options are `gpt-6-luna` and `gpt-6.1-sol`; availability depends on the configured endpoint and account. Analysis requires Responses structured output, and public-source research requires `web_search`. The interface language does not alter the uploaded contract. Session data and generated-file links may be lost when the application restarts, so reports should be exported during the session.
+
+## Three live test cases
+
+The [English evaluation record](evaluation/english-live-tests-2026-11-01/README.md) documents three sequential runs completed on **1 November 2026**. It contains the prompts, observed outputs, limitations and nine screenshots of the running application.
+
+| Test | Task | Observed result |
+|---|---|---|
+| TC01 | Upload a Chinese used-vehicle contract and request a comprehensive review in English. | Fourteen contract issues and ten coverage checks; screenshots record the upload, question and report. |
+| TC02 | Request related cases on refund deadlines, expenses and vehicle-return arrangements. | A focused case-research answer, with PKULAW-first activity and subsequent public-source research. |
+| TC03 | Ask whether courts generally require both the vehicle and the price to be returned. | A qualified answer addressing the new question in the context of the earlier contract review. |
+
+The tests used the [original Chinese contract](evaluation/english-live-tests-2026-11-01/inputs/test%20contract.docx). An [English version](evaluation/english-live-tests-2026-11-01/inputs/Used%20Vehicle%20Sale%20and%20Purchase%20Agreement%20English.docx) is supplied as a reading aid; it was not the input for these recorded runs. The [input provenance note](evaluation/english-live-tests-2026-11-01/inputs/README.md) describes the files. The [Word evaluation report](evaluation/english-live-tests-2026-11-01/Juriscloud%20Live%20English%20Functional%20Tests.docx), [prompts](evaluation/english-live-tests-2026-11-01/prompts.json), [selected answer text](evaluation/english-live-tests-2026-11-01/actual-responses.md) and original screenshots provide the supporting evidence. The selected answer text is not a complete verbatim transcript.
+
+These runs demonstrate functional execution, not legal accuracy. TC01 recorded quotation matches of 0/0; TC02 recorded 5/6; TC03 could not reverify an earlier case from its available evidence. Full judgments, subsequent treatment and current law were not independently verified. Some Activity labels remained Chinese under the English interface. The recorded runs preceded the final case-link display change, which is covered by fixture tests.
+
+## Local setup and automated tests
+
+Python 3.11 or 3.12 is supported; development tests used Python 3.12.
 
 ```bash
 python -m venv .venv
@@ -29,64 +52,38 @@ python -m pip install -r requirements.txt
 streamlit run app.py
 ```
 
-Open **Get started → Settings → Model & connection**, enter your own model API key and test the connection. The analysis model needs Responses structured output; the search model also needs `web_search`. The two model dropdowns contain `gpt-6-luna` and `gpt-6.1-sol`, as requested for this project. Your endpoint and account must actually provide these models. A successful models-list request is not a full analysis test. A compatible alternative endpoint can be configured by the deployment administrator through `OPENAI_BASE_URL`; never commit credentials.
-
-New sessions default to mainland China with PKULAW research enabled; users can change the jurisdiction or disable PKULAW in Settings. Choose interface language, answer language, jurisdiction and your perspective in Settings. Changing interface language does not translate the original contract. Attach the contract with **+**, enter a question and send. After a report, use the compact input at the bottom to continue the conversation.
-
-Without a model key, the app allows input preparation but does not generate simulated answers. Contracts and keys remain in the current app session; there is no account or cloud conversation-history database. Contracts and necessary research excerpts are sent to the model provider. Only authorised materials should be uploaded.
-
-## Three live test cases and evidence
-
-The [English live-test report](evaluation/english-live-tests-2026-11-01/README.md) records three real sequential runs completed on **1 November 2026**, with expected results, observed answers and limitations:
-
-| Test | Input / prompt | Evidence and outcome |
-|---|---|---|
-| TC01 | Upload a Chinese used-car contract; ask for a comprehensive English review | Fourteen contract issues and ten coverage checks; real upload, question and report screenshots |
-| TC02 | Ask for cases concerning refund deadlines, expenses and return arrangements | Focused case answer; observed PKULAW-first activity and public-source follow-up |
-| TC03 | Ask whether courts generally order return of both vehicle and price | Direct, qualified answer retaining the contract context rather than repeating the initial table |
-
-Download the [English Word report with screenshots](evaluation/english-live-tests-2026-11-01/Juriscloud%20Live%20English%20Functional%20Tests.docx). [Prompts](evaluation/english-live-tests-2026-11-01/prompts.json), [selected answer text](evaluation/english-live-tests-2026-11-01/actual-responses.md), observations and nine original screenshots are included. Selected text records are not complete verbatim transcripts.
-
-**Test input:** The three recorded tests used the [original Chinese contract — test contract.docx](evaluation/english-live-tests-2026-11-01/inputs/test%20contract.docx). An [English version](evaluation/english-live-tests-2026-11-01/inputs/Used%20Vehicle%20Sale%20and%20Purchase%20Agreement%20English.docx) is attached for the instructor's reading convenience; it was not the input used to generate the recorded results. See the [input provenance note](evaluation/english-live-tests-2026-11-01/inputs/README.md). Synthetic [examples](examples/) are supplementary fixtures.
-
-Functional execution is not a legal-accuracy certification. TC01 recorded quotation matches of 0/0; TC02 recorded 5/6; TC03 could not reverify an earlier case from its current evidence set. Some Activity labels remained Chinese under English UI. Full judgments, subsequent treatment and current law were not independently verified. The live evidence predates the final case-link presentation update; fixture tests cover that update.
-
-## Automated verification
+The model API key is entered in **Settings → Model & connection**. A compatible alternative endpoint can be configured with `OPENAI_BASE_URL`. Credentials are excluded from the repository.
 
 ```bash
 python -m pip install pytest
 python -m pytest -q
 ```
 
-The current source has **133 passing local tests**. These cover parsing, workflow calls, follow-up relevance guards, coverage, source handling, PKULAW integration with simulated transport, exports, UI helpers and credential isolation. Test doubles do not prove legal correctness or live-provider availability. `evaluation/benchmark_latency.py` uses simulated I/O and is not a real-provider speed benchmark.
+**133 local tests pass.** They cover document parsing, workflow calls, follow-up relevance, coverage checks, source handling, PKULAW integration with simulated transport, exports, UI helpers and credential isolation. Simulated transport does not establish live-provider availability or legal correctness. `evaluation/benchmark_latency.py` uses simulated I/O and does not measure live-provider latency.
 
-## Optional PKULAW configuration
+## PKULAW configuration
 
-The backend reads `PKULAW_TOKEN` from the environment, otherwise `.streamlit/pkulaw.local.json`. Both credentials and the local file are excluded from this repository. The local administrator setup can save a backend token; session-only entry is also supported when no backend token exists. Configure the cloud token privately through deployment secrets; never put it in code or a screenshot.
+The backend reads `PKULAW_TOKEN` from the environment and otherwise from `.streamlit/pkulaw.local.json`. The local token file and credential values are excluded from the repository. Streamlit Cloud uses a private application secret. A session-only token can be entered when no backend token is configured.
 
-The connection check initialises the two services and lists tools without performing paid case research. Actual searches need a valid subscription and quota. Returned excerpts can be incomplete and do not establish complete judgment access. Retrieved material is sent to the analysis model. PKULAW is optional; a failed connection is reported and public-source research remains available.
+The connection check authenticates the case and legislation services and lists their available tools without conducting a paid search. Live searches require an active subscription and available quota. Retrieved excerpts may be incomplete and are sent to the analysis model. Public-source research remains available if PKULAW research fails.
 
-## Limits
+## Scope and verification limits
 
-- Text PDF and DOCX only; no OCR, encrypted PDF, legacy `.doc`, existing tracked revisions or embedded-object documents. Single-file limit: 8 MB; combined extracted-text limits are enforced.
-- Checklist coverage and a second AI review reduce omissions but cannot guarantee completeness.
-- Source quotation matching checks text correspondence, not legal applicability, currency or correctness. At most five public sources are read per research step; long sources use relevant excerpts.
-- Follow-ups retain conversational and contract context, but do not automatically rebuild the initial coverage checklist or preserve every earlier research source. Re-run full review for a new comprehensive assessment.
-- Complex Word structures may prevent a particular tracked amendment. PDF/text contracts are reconstructed for Word export; unsupported additions remain suggestions.
-- Session data and generated-file links can be lost on restart. Export work before ending the session.
+- DOCX, text-based PDF and plain text are supported. OCR, encrypted PDFs, legacy `.doc` files, existing tracked revisions and embedded-object documents are unsupported. The single-file upload limit is 8 MB, with additional combined extracted-text limits.
+- The coverage checklist and independent critique reduce omissions but do not guarantee completeness.
+- Quotation matching establishes textual correspondence, not legal applicability, currency or correctness. Public research reads at most five sources per step, using relevant excerpts from long sources.
+- Follow-ups retain the contract and conversation context but do not automatically rebuild the original coverage checklist or retain every earlier research source. A new comprehensive assessment requires another full review.
+- Some complex Word structures cannot accept a tracked amendment. PDF and text inputs are reconstructed for Word export; unsupported amendments remain recommendations.
+- The public Streamlit Cloud homepage, workbench, settings and English/Chinese interface switching were checked. On 2 November 2026, the configured PKULAW case and legislation services passed authentication and tool-list checks without a search. Live cloud model analysis, report export and actual PKULAW research have not yet been verified.
 
-## Repository map
+## Repository contents
 
 - `app.py`, `legal_agent/`: Streamlit application and agent workflow.
-- `assets/`: bilingual frontend, animation, upload, export and copy components; bundled font license included.
-- `tests/`: reproducible automated tests and explicitly labelled fixtures.
-- `examples/`, `scripts/make_samples.py`: synthetic supplementary inputs.
-- `evaluation/english-live-tests-2026-11-01/`: final live English test report and screenshots.
-- `PRD.md`, `DESIGN.md`, `THIRD_PARTY.md`: product/design records and external references. Historical plans are not claims that every proposed feature was implemented.
-- `docs/`: deployment and submission checklist.
+- `assets/`: interface components, styling, animation, upload, export and copying.
+- `tests/`: automated tests and labelled fixtures.
+- `examples/`, `scripts/make_samples.py`: supplementary synthetic inputs.
+- `evaluation/english-live-tests-2026-11-01/`: live evaluation record, inputs and screenshots.
+- `PRD.md`, `DESIGN.md`, `THIRD_PARTY.md`: product and design documentation and external references.
+- `docs/DEPLOYMENT.md`, `docs/ASSIGNMENT_CHECKLIST.md`: deployment details and assessment status.
 
-## Assignment-specific outstanding requirements
-
-The specified API Credentials module at `https://github.com/stoneman-mls/openai_credentials` returned 404 during preparation. The current custom Settings/sidebar credential input is temporary and is **not claimed to satisfy the specified-module requirement**. Obtain the correct module or instructor confirmation before submission.
-
-The repository remains private. Teacher access has not been granted because the teacher's GitHub username is unavailable. The public Streamlit Cloud app was deployed on 2 November 2026. Anonymous homepage/workbench access and settings were checked; PKULAW case and legislation authentication/tool-list checks passed on 2 November 2026 using a server-configured Token, without executing searches. Live cloud model analysis and actual PKULAW research remain untested. Do not alter the submitted repository after the formal submission date unless permitted by the instructor.
+The course-specified API Credentials module was unavailable at the supplied repository URL (HTTP 404), so the current application uses its own Settings credential input. The repository is private; instructor access requires a GitHub invitation from the owner.
